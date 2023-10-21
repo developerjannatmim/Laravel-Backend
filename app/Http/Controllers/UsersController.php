@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -15,16 +16,26 @@ class UsersController extends Controller
         return response()->json([
             'data' => [
                 'users' => User::get(),
-            ]
+            ],
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function user_store(Request $request)
+    public function user_store(UserRequest $request)
     {
-        //
+        return response()->json([
+            'data'=> [
+                $validated = $request->validated(),
+                'users'=> User::create([
+                    'name' => $validated['name'],
+                    'email'=> $validated['email'],
+                    'password'=> bcrypt($validated['password'])
+                ]),
+            ],
+            'message' => 'user store successfull.',
+        ]);
     }
 
     /**
