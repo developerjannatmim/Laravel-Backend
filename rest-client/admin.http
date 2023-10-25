@@ -1,0 +1,20 @@
+### List
+GET http://127.0.0.1:8000/api/admin
+Accept: application/json
+
+### Store
+POST http://127.0.0.1:8000/api/admin
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "abdul1",
+  "email": "abdul1@b.co",
+  "password": "123456",
+  "photo" : "image.png",
+  "gender" : "male",
+  "blood_group" : "a+",
+  "birthday" : "12/2/2002",
+  "phone" : "4546",
+  "address" : "jessore"
+}

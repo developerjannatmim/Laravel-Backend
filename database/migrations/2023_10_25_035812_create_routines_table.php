@@ -24,7 +24,7 @@ return new class extends Migration
             $table->unsignedBigInteger('subject_id');
             $table->foreign('subject_id')->references('id')->on('subjects');
             $table->unsignedBigInteger('room_id');
-            $table->foreign('room_id')->references('id')->on('class_rooms');
+            $table->foreign('room_id')->references('id')->on('classrooms');
             $table->integer('starting_hour');
             $table->integer('ending_hour');
             $table->integer('starting_minute');
