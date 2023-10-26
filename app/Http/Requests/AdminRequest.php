@@ -41,6 +41,7 @@ class AdminRequest extends FormRequest
             'birthday' => 'required',
             'phone' => 'required',
             'address' => 'required'
+            //|image|mimes:jpg,jpeg,png,svg|max:2048
         ];
     }
 }

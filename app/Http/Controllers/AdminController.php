@@ -2,17 +2,125 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AdminRequest;
+use App\Http\Requests\AdminUpdateRequest;
 use App\Http\Requests\ClassesRequest;
 use App\Http\Requests\ClassesUpdateRequest;
 use App\Http\Requests\SubjectRequest;
 use App\Http\Requests\SubjectUpdateRequest;
 use App\Models\Classes;
 use App\Models\Subject;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
+  public function admin_list(Request $request): JsonResponse
+  {
+    return response()->json([
+      'data' => [
+        'admin' => User::where('role_id', 1)->where('school_id', 1)->get(
+          $column = [
+            'id',
+            'name',
+            'email',
+            'user_information'
+          ],
+        ),
+      ],
+      'message' => 'Admin List Created',
+    ]);
+  }
+
+  public function admin_store(AdminRequest $request)
+  {
+    return response()->json([
+      'data' => [
+        $validated = $request->validated(),
+
+          // $file = $validated['photo'],
+          // $filename = time() . '-' . $file,
+          // //$file->move('admin-images/', $filename),
+          // $photo = $filename,
+
+
+        $info = array(
+          'gender' => $validated['gender'],
+          'blood_group' => $validated['blood_group'],
+          'birthday' => $validated['birthday'],
+          'phone' => $validated['phone'],
+          'address' => $validated['address'],
+          'photo' => $validated['photo'],
+        ),
+        $validated['user_information'] = json_encode($info),
+
+        'admin' => User::create([
+          'name' => $validated['name'],
+          'email' => $validated['email'],
+          'password' => bcrypt($validated['password']),
+          'user_information' => $validated['user_information'],
+          'role_id' => '1',
+          'school_id' => '1'
+        ]),
+      ],
+      'message' => 'Admin store successful.',
+    ]);
+
+  }
+
+  public function admin_Show(User $admin)
+  {
+    return response()->json([
+      'data' => [
+        'admin' => $admin,
+      ],
+      'message' => 'Admin show successful.',
+    ]);
+  }
+
+  public function admin_update(AdminUpdateRequest $request, User $admin)
+  {
+    $admin->update($request->validated());
+    return response()->json([
+      'data' => [
+        $validated = $request->validated(),
+
+        $info = array(
+          'gender' => $validated['gender'],
+          'blood_group' => $validated['blood_group'],
+          'birthday' => $validated['birthday'],
+          'phone' => $validated['phone'],
+          'address' => $validated['address'],
+          'photo' => $validated['photo']
+        ),
+
+        $validated['user_information'] = json_encode($info),
+
+        'admin' => $admin->update([
+          'name' => $validated['name'],
+          'email' => $validated['email'],
+          'user_information' => $validated['user_information'],
+          'role_id' => '1',
+          'school_id' => '1'
+        ]),
+      ],
+      'message' => 'Admin update successful.',
+    ]);
+  }
+
+  public function admin_destroy(User $admin)
+  {
+    $admin->delete();
+    return response()->json([
+      'data' => [
+        'admin' => $admin,
+      ],
+      'message' => 'Admin deleted Successful.',
+    ]);
+  }
+
+
   public function class_list(Request $request): JsonResponse
   {
     return response()->json([
@@ -116,7 +224,7 @@ class AdminController extends Controller
       'data' => [
         'subject' => $subject,
       ],
-      'message' => 'class show successful.',
+      'message' => 'subject show successful.',
     ]);
   }
 
@@ -127,7 +235,7 @@ class AdminController extends Controller
       'data' => [
         'subject' => $subject->update([
           'name' => $request['name'],
-          'class_id' => '1',
+          'class_id' => $request['class_id'],
           'school_id' => '1'
         ]),
       ],
