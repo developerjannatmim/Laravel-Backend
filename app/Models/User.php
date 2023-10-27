@@ -18,9 +18,14 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+		'name',
+		'email',
+		'password',
+		'role_id',
+		'class_id',
+		'section_id',
+		'school_id',
+		'user_information'
     ];
 
     /**
@@ -42,4 +47,15 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function getNameAttribute($value)
+	{
+		return $this->attributes['name'] = ucfirst($value);
+	}
+
+	public function getBirthdayAttribute($date)
+	{
+		return $this->attributes['birthday'] = date('Y-m-d', $date);
+	}
+
 }
