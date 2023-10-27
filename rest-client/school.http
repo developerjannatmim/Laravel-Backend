@@ -1,0 +1,37 @@
+### List
+GET http://127.0.0.1:8000/api/schools
+Accept: application/json
+
+### Store
+POST http://127.0.0.1:8000/api/schools
+Accept: application/json
+Content-Type: application/json
+
+{
+  "title": "test school",
+  "email": "a@gmail.com",
+  "phone": "1234567",
+  "address": "kazipara",
+  "school_info": "kazipara"
+}
+
+### Show
+GET http://127.0.0.1:8000/api/schools/1
+Accept: application/json
+
+### Update
+PUT http://127.0.0.1:8000/api/schools/3
+Accept: application/json
+Content-Type: application/json
+
+{
+  "title": "test11 school",
+  "email": "a11@gmail.com",
+  "phone": "1234567",
+  "address": "kazipara",
+  "school_info": "kazipara"
+}
+
+### Delete
+DELETE  http://127.0.0.1:8000/api/schools/4
+Accept: application/json

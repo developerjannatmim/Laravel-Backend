@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ClassesRequest extends FormRequest {
+class RoutineUpdateRequest extends FormRequest {
     /**
     * Determine if the user is authorized to make this request.
     */
@@ -31,8 +31,16 @@ class ClassesRequest extends FormRequest {
 
     public function rules(): array {
         return [
-            'name' => 'required',
+            'day' => 'required',
+            'starting_hour' => 'required',
+            'starting_minute' => 'required',
+            'ending_hour' => 'required',
+            'ending_minute' => 'required',
+            'routine_creator' => 'required',
+            'class_id' => 'required',
+            'subject_id' => 'required',
             'section_id' => 'required',
+            'room_id' => 'required',
         ];
     }
 }

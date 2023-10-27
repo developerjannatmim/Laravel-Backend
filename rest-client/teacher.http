@@ -1,0 +1,45 @@
+### List
+GET http://127.0.0.1:8000/api/teachers
+Accept: application/json
+
+### Store
+POST http://127.0.0.1:8000/api/teachers
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "teacher11",
+  "email": "teacher11@b.co",
+  "password": "123456",
+  "gender": "male",
+  "birthday": "birthday",
+  "phone": "phone",
+  "address": "address",
+  "blood_group": "blood_group",
+  "photo": "photo.jpg"
+}
+
+### Show
+GET http://127.0.0.1:8000/api/teachers/12
+Accept: application/json
+
+### Update
+PUT http://127.0.0.1:8000/api/teachers/12
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "nazim11",
+  "email": "nazim11@b.co",
+  "password": "123456",
+  "gender": "male",
+  "birthday": "birthday",
+  "phone": "phone",
+  "address": "address",
+  "blood_group": "blood_group",
+  "photo": "photo.jpg"
+}
+
+### Delete
+DELETE  http://127.0.0.1:8000/api/teachers/1
+Accept: application/json

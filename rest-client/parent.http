@@ -1,0 +1,45 @@
+### List
+GET http://127.0.0.1:8000/api/parents
+Accept: application/json
+
+### Store
+POST http://127.0.0.1:8000/api/parents
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "parent11",
+  "email": "parent11@b.co",
+  "password": "123456",
+  "gender": "male",
+  "birthday": "birthday",
+  "phone": "phone",
+  "address": "address",
+  "blood_group": "blood_group",
+  "photo": "photo.jpg"
+}
+
+### Show
+GET http://127.0.0.1:8000/api/parents/8
+Accept: application/json
+
+### Update
+PUT http://127.0.0.1:8000/api/parents/8
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "jannatul",
+  "email": "jannatul@b.co",
+  "password": "123456",
+  "gender": "female",
+  "birthday": "birthday",
+  "phone": "phone",
+  "address": "address",
+  "blood_group": "blood_group",
+  "photo": "photo.jpg"
+}
+
+### Delete
+DELETE  http://127.0.0.1:8000/api/parents/14
+Accept: application/json

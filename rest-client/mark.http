@@ -1,0 +1,43 @@
+### List
+GET http://127.0.0.1:8000/api/marks
+Accept: application/json
+
+### Store
+POST http://127.0.0.1:8000/api/marks
+Accept: application/json
+Content-Type: application/json
+
+{
+  "marks": "80",
+  "grade_point": "5.00",
+  "comment": "good performance",
+  "user_id": "5",
+  "exam_id": "1",
+  "class_id": "1",
+  "section_id": "1",
+  "subject_id": "1"
+}
+
+### Show
+GET http://127.0.0.1:8000/api/marks/3
+Accept: application/json
+
+### Update
+PUT http://127.0.0.1:8000/api/marks/3
+Accept: application/json
+Content-Type: application/json
+
+{
+  "marks": "67",
+  "grade_point": "3.00",
+  "comment": "not bad",
+  "user_id": "1",
+  "exam_id": "1",
+  "class_id": "1",
+  "section_id": "1",
+  "subject_id": "1"
+}
+
+### Delete
+DELETE  http://127.0.0.1:8000/api/marks/5
+Accept: application/json

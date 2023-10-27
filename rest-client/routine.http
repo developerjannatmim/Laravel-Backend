@@ -1,0 +1,47 @@
+### List
+GET http://127.0.0.1:8000/api/routines
+Accept: application/json
+
+### Store
+POST http://127.0.0.1:8000/api/routines
+Accept: application/json
+Content-Type: application/json
+
+{
+  "day": "saturday",
+  "starting_hour": "10",
+  "starting_minute": "1",
+  "ending_hour": "1",
+  "ending_minute": "23",
+  "routine_creator": "5",
+  "class_id": "1",
+  "subject_id": "1",
+  "section_id": "1",
+  "room_id": "1"
+}
+
+### Show
+GET http://127.0.0.1:8000/api/routines/2
+Accept: application/json
+
+### Update
+PUT http://127.0.0.1:8000/api/routines/2
+Accept: application/json
+Content-Type: application/json
+
+{
+  "day": "sunday",
+  "starting_hour": "10",
+  "starting_minute": "1",
+  "ending_hour": "3",
+  "ending_minute": "56",
+  "routine_creator": "6",
+  "class_id": "1",
+  "subject_id": "1",
+  "section_id": "1",
+  "room_id": "1"
+}
+
+### Delete
+DELETE  http://127.0.0.1:8000/api/routines/3
+Accept: application/json

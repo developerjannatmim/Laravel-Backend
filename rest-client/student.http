@@ -1,0 +1,45 @@
+### List
+GET http://127.0.0.1:8000/api/students
+Accept: application/json
+
+### Store
+POST http://127.0.0.1:8000/api/students
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "student1",
+  "email": "student1@b.co",
+  "password": "123456",
+  "gender": "female",
+  "birthday": "birthday",
+  "phone": "phone",
+  "address": "address",
+  "blood_group": "blood_group",
+  "photo": "photo.jpg"
+}
+
+### Show
+GET http://127.0.0.1:8000/api/students/9
+Accept: application/json
+
+### Update
+PUT http://127.0.0.1:8000/api/students/10
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "mim",
+  "email": "mim@b.co",
+  "password": "123456",
+  "gender": "female",
+  "birthday": "birthday",
+  "phone": "phone",
+  "address": "address",
+  "blood_group": "blood_group",
+  "photo": "photo.jpg"
+}
+
+### Delete
+DELETE  http://127.0.0.1:8000/api/students/1
+Accept: application/json
