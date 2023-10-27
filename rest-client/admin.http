@@ -20,11 +20,11 @@ Content-Type: application/json
 }
 
 ### Show
-GET http://127.0.0.1:8000/api/admin/2
+GET http://127.0.0.1:8000/api/admin/6
 Accept: application/json
 
 ### Update
-PUT http://127.0.0.1:8000/api/admin/2
+PUT http://127.0.0.1:8000/api/admin/6
 Accept: application/json
 Content-Type: application/json
 
