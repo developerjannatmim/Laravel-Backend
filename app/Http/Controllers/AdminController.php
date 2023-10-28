@@ -1036,7 +1036,7 @@ class AdminController extends Controller {
     public function classRoom_list( Request $request ): JsonResponse {
         return response()->json( [
             'data' => [
-                'classRoom' => ClassRoom::get(
+                'classRooms' => ClassRoom::get(
                     $column = [
                         'id',
                         'name',
