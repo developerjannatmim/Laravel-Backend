@@ -558,7 +558,7 @@ class AdminController extends Controller {
     public function grade_list( Request $request ): JsonResponse {
         return response()->json( [
             'data' => [
-                'grade' => Grade::get(
+                'grades' => Grade::get(
                     $column = [
                         'id',
                         'name',
@@ -622,7 +622,7 @@ class AdminController extends Controller {
     public function section_list( Request $request ): JsonResponse {
         return response()->json( [
             'data' => [
-                'section' => Section::get(
+                'sections' => Section::get(
                     $column = [
                         'id',
                         'name'
@@ -680,7 +680,7 @@ class AdminController extends Controller {
     public function exam_list( Request $request ): JsonResponse {
         return response()->json( [
             'data' => [
-                'exam' => Exam::where( 'school_id', 1 )->get(
+                'exams' => Exam::where( 'school_id', 1 )->get(
                     $column = [
                         'id',
                         'name',
@@ -754,7 +754,7 @@ class AdminController extends Controller {
     public function mark_list( Request $request ): JsonResponse {
         return response()->json( [
             'data' => [
-                'mark' => Mark::get(
+                'marks' => Mark::get(
                     $column = [
                         'id',
                         'marks',
@@ -826,7 +826,7 @@ class AdminController extends Controller {
     public function routine_list( Request $request ): JsonResponse {
         return response()->json( [
             'data' => [
-                'routine' => Routine::get(
+                'routines' => Routine::get(
                     $column = [
                         'id',
                         'day',
@@ -902,7 +902,7 @@ class AdminController extends Controller {
     public function syllabus_list( Request $request ): JsonResponse {
         return response()->json( [
             'data' => [
-                'syllabus' => Syllabus::get(
+                'syllabuses' => Syllabus::get(
                     $column = [
                         'id',
                         'title',
