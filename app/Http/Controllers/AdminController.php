@@ -241,7 +241,7 @@ class AdminController extends Controller {
     public function parent_list( Request $request ): JsonResponse {
         return response()->json( [
             'data' => [
-                'parent' => User::where( 'role_id', 4 )->get(
+                'parents' => User::where( 'role_id', 4 )->get(
                     $column = [
                         'id',
                         'name',
@@ -335,7 +335,7 @@ class AdminController extends Controller {
     public function teacher_list( Request $request ): JsonResponse {
         return response()->json( [
             'data' => [
-                'teacher' => User::where( 'role_id', 2 )->get(
+                'teachers' => User::where( 'role_id', 2 )->get(
                     $column = [
                         'id',
                         'name',
@@ -823,7 +823,8 @@ class AdminController extends Controller {
 
     //Routine
 
-    public function routine_list( Request $request ): JsonResponse {
+    public function routine_list( Request $request ): JsonResponse 
+    {
         return response()->json( [
             'data' => [
                 'routines' => Routine::get(
@@ -838,7 +839,7 @@ class AdminController extends Controller {
                         'class_id',
                         'subject_id',
                         'section_id',
-                        'room_id'
+                        'room_id',
                     ],
                 ),
             ],

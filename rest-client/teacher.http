@@ -8,8 +8,8 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "name": "teacher11",
-  "email": "teacher11@b.co",
+  "name": "teacher",
+  "email": "teacher@b.co",
   "password": "123456",
   "gender": "male",
   "birthday": "birthday",
@@ -20,19 +20,19 @@ Content-Type: application/json
 }
 
 ### Show
-GET http://127.0.0.1:8000/api/teachers/12
+GET http://127.0.0.1:8000/api/teachers/33
 Accept: application/json
 
 ### Update
-PUT http://127.0.0.1:8000/api/teachers/12
+PUT http://127.0.0.1:8000/api/teachers/26
 Accept: application/json
 Content-Type: application/json
 
 {
-  "name": "nazim11",
-  "email": "nazim11@b.co",
+  "name": "nazima",
+  "email": "nazima@b.co",
   "password": "123456",
-  "gender": "male",
+  "gender": "female",
   "birthday": "birthday",
   "phone": "phone",
   "address": "address",
@@ -41,5 +41,5 @@ Content-Type: application/json
 }
 
 ### Delete
-DELETE  http://127.0.0.1:8000/api/teachers/1
+DELETE  http://127.0.0.1:8000/api/teachers/10
 Accept: application/json
