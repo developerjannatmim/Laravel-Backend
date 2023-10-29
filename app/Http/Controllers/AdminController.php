@@ -60,38 +60,82 @@ class AdminController extends Controller {
         ] );
     }
 
-    public function admin_store( AdminRequest $request ) {
-        return response()->json( [
-            'data' => [
-                $validated = $request->validated(),
+    // public function admin_store( AdminRequest $request ) {
+    //     return response()->json( [
+    //         'data' => [
+    //             $validated = $request->validated(),
 
-                // $file = $validated[ 'photo' ],
-                // $filename = time() . '-' . $file,
-                // //$file->move( 'admin-images/', $filename ),
-                // $photo = $filename,
+    //             // $file = $validated[ 'photo' ],
+    //             // $filename = time() . '-' . $file,
+    //             // //$file->move( 'admin-images/', $filename ),
+    //             // $photo = $filename,
 
-                $info = array(
-                    'gender' => $validated[ 'gender' ],
-                    'blood_group' => $validated[ 'blood_group' ],
-                    'birthday' => $validated[ 'birthday' ],
-                    'phone' => $validated[ 'phone' ],
-                    'address' => $validated[ 'address' ],
-                    'photo' => $validated[ 'photo' ],
-                ),
-                $validated[ 'user_information' ] = json_encode( $info ),
+    //             $info = array(
+    //                 'gender' => $validated[ 'gender' ],
+    //                 'blood_group' => $validated[ 'blood_group' ],
+    //                 'birthday' => $validated[ 'birthday' ],
+    //                 'phone' => $validated[ 'phone' ],
+    //                 'address' => $validated[ 'address' ],
+    //                 'photo' => $validated[ 'photo' ],
+    //             ),
+    //             $validated[ 'user_information' ] = json_encode( $info ),
 
-                'admin' => User::create( [
-                    'name' => $validated[ 'name' ],
-                    'email' => $validated[ 'email' ],
-                    'password' => bcrypt( $validated[ 'password' ] ),
-                    'user_information' => $validated[ 'user_information' ],
-                    'role_id' => '1',
-                    'school_id' => '1'
-                ] ),
-            ],
-            'message' => 'Admin store successful.',
-        ] );
+    //             'admin' => User::create( [
+    //                 'name' => $validated[ 'name' ],
+    //                 'email' => $validated[ 'email' ],
+    //                 'password' => bcrypt( $validated[ 'password' ] ),
+    //                 'user_information' => $validated[ 'user_information' ],
+    //                 'role_id' => '1',
+    //                 'school_id' => '1'
+    //             ] ),
+    //         ],
+    //         'message' => 'Admin store successful.',
+    //     ] );
 
+    // }
+
+    public function admin_store( AdminRequest $request) {
+        $validated = $request->validated();
+        // if($validated->fails()){
+        //     return response()->json( [
+        //         'status' => 422,
+        //         'errors' => $validated->messages(),
+        //     ] );
+        // }else{
+
+            $file = $validated[ 'photo' ];
+            $extention = $file->getClientOriginalExtension();
+            $filename = time() . '-' . $extention;
+            $file->move( 'admin-images/', $filename );
+            $photo = $filename;
+
+            $info = array(
+                'gender' => $validated['gender'],
+                'blood_group' => $validated['blood_group'],
+                'birthday' => $validated['birthday'],
+                'phone' => $validated['phone'],
+                'address' => $validated['address'],
+                //'photo' => $validated['photo'],
+                'photo' => $photo,
+            );
+
+            $validated['user_information'] = json_encode($info);
+            $admin = User::create([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'password' => bcrypt( $validated['password'] ),
+                'user_information' => $validated[ 'user_information' ],
+                'role_id' => '1',
+                'school_id' => '1'
+            ]);
+
+            $admin->save();
+            return response()->json( [
+                'status'=> 200,
+                'message'=> 'Admin store successful.',
+            ]) ;
+
+        // }
     }
 
     public function admin_Show( User $admin ) {
