@@ -50,7 +50,8 @@ class AuthController extends Controller
         'validation_errors' => $validator->messages(),
       ]);
     } else {
-      $user = User::where('email', $request->email)->first();
+      $user = User::where('email', $request->email)->first(); 
+      //$role = User::where('role_id', $request->role_id)->first();
 
       if (!$user || !Hash::check($request->password, $user->password)) {
         return response()->json([
@@ -63,6 +64,7 @@ class AuthController extends Controller
           'status' => 200,
           'username' => $user->name,
           'token' => $token,
+          'role_id' => $user->role_id,
           'message' => 'Logged In successfull.'
         ]);
       }

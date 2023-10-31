@@ -16,7 +16,7 @@ Content-Type: application/json
 }
 
 ### Show
-GET http://127.0.0.1:8000/api/schools/1
+GET http://127.0.0.1:8000/api/schools/2
 Accept: application/json
 
 ### Update

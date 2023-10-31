@@ -99,39 +99,40 @@ class AdminController extends Controller
 
   public function admin_store(AdminRequest $request)
   {
-    $validated = $request->validated();
+    $validation = $request->validated();
 
-    $file = $validated['photo'];
-    $extention = $file->getClientOriginalExtension();
-    $filename = time() . '-' . $extention;
-    $file->move('admin-images/', $filename);
-    $photo = $filename;
+      $file = $validation['photo'];
+      $extention = $file->getClientOriginalExtension();
+      $filename = time() . '-' . $extention;
+      $file->move('admin-images/', $filename);
+      $photo = $filename;
 
-    $info = array(
-      'gender' => $validated['gender'],
-      'blood_group' => $validated['blood_group'],
-      'birthday' => $validated['birthday'],
-      'phone' => $validated['phone'],
-      'address' => $validated['address'],
-      'photo' => $photo,
-    );
+      $info = array(
+        'gender' => $validation['gender'],
+        'blood_group' => $validation['blood_group'],
+        'birthday' => $validation['birthday'],
+        'phone' => $validation['phone'],
+        'address' => $validation['address'],
+        'photo' => $photo,
+      );
 
-    $validated['user_information'] = json_encode($info);
-    $admin = User::create([
-      'name' => $validated['name'],
-      'email' => $validated['email'],
-      'password' => bcrypt($validated['password']),
-      'user_information' => $validated['user_information'],
-      'role_id' => '1',
-      'school_id' => '1'
-    ]);
+      $validation['user_information'] = json_encode($info);
+      $admin = User::create([
+        'name' => $validation['name'],
+        'email' => $validation['email'],
+        'password' => bcrypt($validation['password']),
+        'user_information' => $validation['user_information'],
+        'role_id' => '1',
+        'school_id' => '1'
+      ]);
 
-    $admin->save();
+      $admin->save();
 
-    return response()->json([
-      'status' => 200,
-      'message' => 'Admin store successful.',
-    ]);
+      return response()->json([
+        'status' => 200,
+        'message' => 'Admin store successful.',
+      ]);
+
   }
 
   public function admin_Show(User $admin)
@@ -1067,7 +1068,7 @@ class AdminController extends Controller
   {
     return response()->json([
       'data' => [
-        'school' => School::where('id', 1)->get(
+        'school' => School::get(
           $column = [
             'id',
             'title',
@@ -1094,8 +1095,7 @@ class AdminController extends Controller
           'phone' => $validated['phone'],
           'address' => $validated['address'],
           'school_info' => $validated['school_info'],
-          'status' => '1',
-          'school_id' => '1'
+          'status' => "active"
         ]),
       ],
       'message' => 'school store successful.',

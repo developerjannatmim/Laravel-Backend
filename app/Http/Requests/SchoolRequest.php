@@ -36,7 +36,7 @@ class SchoolRequest extends FormRequest {
             'phone' => 'required',
             'address' => 'required',
             'school_info' => 'required',
-            'status' => 'required',
+            //'status' => 'required',
         ];
     }
 }

@@ -34,13 +34,13 @@ class AdminRequest extends FormRequest {
             'name' => 'required',
             'email' => 'required|email',
             'password' => 'required|min:6',
-            'photo' => 'required|image|mimes:jpg, jpeg, png, svg|max:2048',
+            'photo' => 'required|image|mimes:jpg,jpeg,png,svg|max:2048',
             'gender' => 'required',
             'blood_group' => 'required',
             'birthday' => 'required',
             'phone' => 'required',
             'address' => 'required',
-            //|image|mimes:jpg, jpeg, png, svg|max:2048
+            //|image|mimes:jpg,jpeg,png,svg|max:2048
         ];
     }
 }
