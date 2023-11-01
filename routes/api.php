@@ -25,6 +25,11 @@ Route::post('login', [AuthController::class, 'login']);
 
 Route::controller(AdminController::class)->group(function () {
 
+  Route::group(['prefix' => 'profile'], function () {
+    Route::get('', 'profile');
+    Route::put('', 'student_update');
+  });
+
     //Admin user route
     Route::group(['prefix' => 'admin'], function () {
         Route::get('', 'admin_list');
