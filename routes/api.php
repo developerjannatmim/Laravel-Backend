@@ -27,7 +27,6 @@ Route::controller(AdminController::class)->group(function () {
 
   Route::group(['prefix' => 'profile'], function () {
     Route::get('', 'profile');
-    Route::put('', 'student_update');
   });
 
     //Admin user route

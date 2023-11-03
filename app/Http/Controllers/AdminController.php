@@ -43,55 +43,78 @@ use App\Models\Section;
 use App\Models\Syllabus;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
 
-  public function profile(User $request, $id): JsonResponse
+  public function profile(AdminRequest $request)
   {
-    return response()->json([
-      'user' => User::find($id),
-    ]);
-  }
+    $validation = $request->validated();
+    $user = User::where('email', $validation->email)->first();
 
-
-  public function profile_update(User $request, $id)
-  {
-    $data = $request->all();
-
-    if (!empty($data['photo'])) {
-      $file = $data['photo'];
-      $filename = time() . '-' . $file->getClientOriginalExtension();
-      $file->move('admin-images/', $filename);
-      $photo = $filename;
+    if (!$user || !Hash::check($validation->password, $user->password)) {
+      return response()->json([
+        'status' => 401,
+        'message' => 'Invalid Credentials.'
+      ]);
     } else {
-      $user_info = User::where('id', $id)->value('user_information');
-      $exsisting_filename = json_decode($user_info)->photo;
-      if ($exsisting_filename !== '') {
-        $photo = $exsisting_filename;
-      } else {
-        $photo = '';
-      }
+      $user_info = User::where('id', '1')->value('user_information');
+      //$photo = json_decode($user_info)->photo;
+      $gender = json_decode($user_info)->gender;
+      $birthday = json_decode($user_info)->birthday;
+      $address = json_decode($user_info)->address;
+      return response()->json([
+        'status' => 200,
+        'username' => $user->name,
+        'userEmail' => $user->email,
+        'gender' => $gender,
+        'birthday' => $birthday,
+        'address' => $address,
+        'role_id' => $user->role_id,
+        'message' => 'Profile show successfull.'
+      ]);
     }
-    $user_info = User::where('id', $id)->value('user_information');
-
-    $info = array(
-      'gender' => $data['gender'],
-      'blood_group' => json_decode($user_info)->blood_group,
-      'birthday' => date($data['birthday']),
-      'phone' => $data['phone'],
-      'address' => $data['address'],
-      'photo' => $photo
-    );
-
-    $data['user_information'] = json_encode($info);
-    User::where('id', $id)->update([
-      'name' => $data['name'],
-      'email' => $data['email'],
-      'user_information' => $data['user_information']
-    ]);
-    return redirect()->route('admin.admin')->with('success', 'Profile Updated Successfully');
   }
+
+
+  // public function profile_update(User $request, $id)
+  // {
+  //   $data = $request->all();
+
+  //   if (!empty($data['photo'])) {
+  //     $file = $data['photo'];
+  //     $filename = time() . '-' . $file->getClientOriginalExtension();
+  //     $file->move('admin-images/', $filename);
+  //     $photo = $filename;
+  //   } else {
+  //     $user_info = User::where('id', $id)->value('user_information');
+  //     $exsisting_filename = json_decode($user_info)->photo;
+  //     if ($exsisting_filename !== '') {
+  //       $photo = $exsisting_filename;
+  //     } else {
+  //       $photo = '';
+  //     }
+  //   }
+  //   $user_info = User::where('id', $id)->value('user_information');
+
+  //   $info = array(
+  //     'gender' => $data['gender'],
+  //     'blood_group' => json_decode($user_info)->blood_group,
+  //     'birthday' => date($data['birthday']),
+  //     'phone' => $data['phone'],
+  //     'address' => $data['address'],
+  //     'photo' => $photo
+  //   );
+
+  //   $data['user_information'] = json_encode($info);
+  //   User::where('id', $id)->update([
+  //     'name' => $data['name'],
+  //     'email' => $data['email'],
+  //     'user_information' => $data['user_information']
+  //   ]);
+  //   return redirect()->route('admin.admin')->with('success', 'Profile Updated Successfully');
+  // }
   public function admin_list(Request $request): JsonResponse
   {
     return response()->json([
