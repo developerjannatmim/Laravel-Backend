@@ -206,6 +206,7 @@ class AdminController extends Controller
 
   public function admin_Show(User $admin)
   {
+    $admin->user_information = json_decode($admin->user_information);
     return response()->json([
       'data' => [
         'admin' => $admin,
@@ -216,32 +217,36 @@ class AdminController extends Controller
 
   public function admin_update(AdminUpdateRequest $request, User $admin)
   {
-    $admin->update($request->validated());
-    return response()->json([
-      'data' => [
-        $validated = $request->validated(),
+    $validation = $request->validated();
 
-        $info = array(
-          'gender' => $validated['gender'],
-          'blood_group' => $validated['blood_group'],
-          'birthday' => $validated['birthday'],
-          'phone' => $validated['phone'],
-          'address' => $validated['address'],
-          'photo' => $validated['photo']
-        ),
+      // $file = $validation['photo'];
+      // $extention = $file->getClientOriginalExtension();
+      // $filename = time() . '-' . $extention;
+      // $file->move('admin-images/', $filename);
+      // $photo = $filename;
 
-        $validated['user_information'] = json_encode($info),
+      $info = array(
+        'gender' => $validation['gender'],
+        'blood_group' => $validation['blood_group'],
+        'birthday' => $validation['birthday'],
+        'phone' => $validation['phone'],
+        'address' => $validation['address'],
+        //'photo' => $validation['photo'],
+      );
 
-        'admin' => $admin->update([
-          'name' => $validated['name'],
-          'email' => $validated['email'],
-          'user_information' => $validated['user_information'],
-          'role_id' => '1',
-          'school_id' => '1'
-        ]),
-      ],
-      'message' => 'Admin update successful.',
-    ]);
+      $validation['user_information'] = json_encode($info);
+      $admin = User::update([
+        'name' => $validation['name'],
+        'email' => $validation['email'],
+        'user_information' => $validation['user_information'],
+        'role_id' => '1',
+        'school_id' => '1'
+      ]);
+
+      return response()->json([
+        'status' => 200,
+        'message' => 'Admin update successful.',
+      ]);
   }
 
   public function admin_destroy(User $admin)

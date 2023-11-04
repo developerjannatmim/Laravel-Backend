@@ -20,19 +20,17 @@ Content-Type: application/json
 }
 
 ### Show
-GET http://127.0.0.1:8000/api/admin/6
+GET http://127.0.0.1:8000/api/admin/46
 Accept: application/json
 
 ### Update
-PUT http://127.0.0.1:8000/api/admin/6
+PUT http://127.0.0.1:8000/api/admin/46
 Accept: application/json
 Content-Type: application/json
 
 {
   "name": "abdul22",
   "email": "abdul22@b.co",
-  "password": "123456",
-  "photo" : "image22.png",
   "gender" : "male22",
   "blood_group" : "a+",
   "birthday" : "12/2/2002",
