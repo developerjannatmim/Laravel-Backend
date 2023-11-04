@@ -60,7 +60,7 @@ class AuthController extends Controller
       } else {
         $token = $user->createToken($user->email . '_Token')->plainTextToken;
         $user_info = User::where('id', $user->id)->value('user_information');
-        // //$photo = json_decode($user_info)->photo;
+        $photo = json_decode($user_info)->photo;
         $gender = json_decode($user_info)->gender;
         $phone = json_decode($user_info)->phone;
         $birthday = json_decode($user_info)->birthday;
@@ -72,6 +72,7 @@ class AuthController extends Controller
           'userEmail' => $user->email,
           'gender' => $gender,
           'phone' => $phone,
+          'photo' => $photo,
           'birthday' => $birthday,
           'address' => $address,
           'blood' => $blood,
