@@ -33,7 +33,7 @@ class AdminUpdateRequest extends FormRequest {
         return [
             'name' => 'required',
             'email' => 'required|email',
-            //'photo' => 'required|image|mimes:jpg,jpeg,png,svg|max:2048',
+            'photo' => 'required|image|mimes:jpg,jpeg,png,svg|max:2048',
             'gender' => 'required',
             'blood_group' => 'required',
             'birthday' => 'required',

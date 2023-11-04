@@ -29,13 +29,14 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "name": "abdul22",
-  "email": "abdul22@b.co",
-  "gender" : "male22",
+  "name": "admin",
+  "email": "admin@b.com",
+  "photo" : "1699076927-jpeg",
+  "gender" : "male",
   "blood_group" : "a+",
-  "birthday" : "12/2/2002",
+  "birthday" : "12/2/2000999",
   "phone" : "454622",
-  "address" : "jessore22"
+  "address" : "jessore999"
 }
 
 ### Delete
