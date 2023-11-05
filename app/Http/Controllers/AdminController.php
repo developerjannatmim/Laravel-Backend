@@ -103,37 +103,37 @@ class AdminController extends Controller
   {
     $validation = $request->validated();
 
-      $file = $validation['photo'];
-      $extention = $file->getClientOriginalExtension();
-      $filename = time() . '-' . $extention;
-      $file->move('admin-images/', $filename);
-      $photo = $filename;
+    $file = $validation['photo'];
+    $extension = $file->getClientOriginalExtension();
+    $filename = time() . '-' . $extension;
+    $file->move('admin-images/', $filename);
+    $photo = $filename;
 
-      $info = array(
-        'gender' => $validation['gender'],
-        'blood_group' => $validation['blood_group'],
-        'birthday' => $validation['birthday'],
-        'phone' => $validation['phone'],
-        'address' => $validation['address'],
-        'photo' => $photo,
-      );
+    $info = array(
+      'gender' => $validation['gender'],
+      'blood_group' => $validation['blood_group'],
+      'birthday' => $validation['birthday'],
+      'phone' => $validation['phone'],
+      'address' => $validation['address'],
+      'photo' => $photo,
+    );
 
-      $validation['user_information'] = json_encode($info);
-      $admin = User::create([
-        'name' => $validation['name'],
-        'email' => $validation['email'],
-        'password' => bcrypt($validation['password']),
-        'user_information' => $validation['user_information'],
-        'role_id' => '1',
-        'school_id' => '1'
-      ]);
+    $validation['user_information'] = json_encode($info);
+    $admin = User::create([
+      'name' => $validation['name'],
+      'email' => $validation['email'],
+      'password' => bcrypt($validation['password']),
+      'user_information' => $validation['user_information'],
+      'role_id' => '1',
+      'school_id' => '1'
+    ]);
 
-      $admin->save();
+    //$admin->save();
 
-      return response()->json([
-        'status' => 200,
-        'message' => 'Admin store successful.',
-      ]);
+    return response()->json([
+      'status' => 200,
+      'message' => 'Admin store successful.',
+    ]);
 
   }
 
@@ -148,41 +148,42 @@ class AdminController extends Controller
     ]);
   }
 
-  public function admin_update(StudentUpdateRequest $request, User $admin)
+  public function admin_update(AdminUpdateRequest $request, User $admin)
   {
-    $admin->update($request->validated());
+    //dd($request);
+    $validation = $request->validated();
+    $admin->update($validation);
 
-    $validated = $request->validated();
+      $file = $validation['photo'];
+      $extension = $file->getClientOriginalExtension();
+      $filename = time() . '-' . $extension;
+      $file->move('admin-update-images/'. $filename);
+      $photo = $filename;
 
-    $file = $validated['photo'];
-    $extention = $file->getClientOriginalExtension();
-    $filename = time() . '-' . $extention;
-    $file->move('admin-images/'. $filename);
-    $photo = $filename;
+      $info = array(
+        'gender' => $validation['gender'],
+        'blood_group' => $validation['blood_group'],
+        'birthday' => $validation['birthday'],
+        'phone' => $validation['phone'],
+        'address' => $validation['address'],
+        'photo' => $photo,
+      );
 
-    $info = array(
-      'gender' => $validated['gender'],
-      'blood_group' => $validated['blood_group'],
-      'birthday' => $validated['birthday'],
-      'phone' => $validated['phone'],
-      'address' => $validated['address'],
-      'photo' => $photo,
-    );
+      $validation['user_information'] = json_encode($info);
 
-    $validated['user_information'] = json_encode($info);
+      $admin = User::find($admin);
+      $admin->name = $validation['name'];
+      $admin->email = $validation['email'];
+      $admin->user_information = $validation['user_information'];
+      $admin->role_id = '1';
+      $admin->school_id = '1';
 
-    $admin = User::find($admin);
-    $admin->name = $validated['name'];
-    $admin->email = $validated['email'];
-    $admin->user_information = $validated['user_information'];
-    $admin->role_id = '1';
-    $admin->school_id = '1';
+      return response()->json([
+        'data' => $admin,
+        'status' => 200,
+        'message' => 'admin update successful.',
+      ]);
 
-    return response()->json([
-      'data' => $admin,
-      'status' => 200,
-      'message' => 'admin update successful.',
-    ]);
   }
 
   public function admin_destroy(User $admin)
@@ -197,7 +198,6 @@ class AdminController extends Controller
   }
 
   //Student
-
   public function student_list(Request $request): JsonResponse
   {
     return response()->json([
@@ -219,37 +219,37 @@ class AdminController extends Controller
   {
     $validation = $request->validated();
 
-      $file = $validation['photo'];
-      $extention = $file->getClientOriginalExtension();
-      $filename = time() . '-' . $extention;
-      $file->move('student-images/', $filename);
-      $photo = $filename;
+    $file = $validation['photo'];
+    $extension = $file->getClientOriginalExtension();
+    $filename = time() . '-' . $extension;
+    $file->move('student-images/', $filename);
+    $photo = $filename;
 
-      $info = array(
-        'gender' => $validation['gender'],
-        'blood_group' => $validation['blood_group'],
-        'birthday' => $validation['birthday'],
-        'phone' => $validation['phone'],
-        'address' => $validation['address'],
-        'photo' => $photo,
-      );
+    $info = array(
+      'gender' => $validation['gender'],
+      'blood_group' => $validation['blood_group'],
+      'birthday' => $validation['birthday'],
+      'phone' => $validation['phone'],
+      'address' => $validation['address'],
+      'photo' => $photo,
+    );
 
-      $validation['user_information'] = json_encode($info);
-      $student = User::create([
-        'name' => $validation['name'],
-        'email' => $validation['email'],
-        'password' => bcrypt($validation['password']),
-        'user_information' => $validation['user_information'],
-        'role_id' => '3',
-        'school_id' => '1'
-      ]);
+    $validation['user_information'] = json_encode($info);
+    $student = User::create([
+      'name' => $validation['name'],
+      'email' => $validation['email'],
+      'password' => bcrypt($validation['password']),
+      'user_information' => $validation['user_information'],
+      'role_id' => '3',
+      'school_id' => '1'
+    ]);
 
-      $student->save();
+    $student->save();
 
-      return response()->json([
-        'status' => 200,
-        'message' => 'Student store successful.',
-      ]);
+    return response()->json([
+      'status' => 200,
+      'message' => 'Student store successful.',
+    ]);
   }
 
   public function student_Show(User $student)
@@ -327,37 +327,37 @@ class AdminController extends Controller
   {
     $validation = $request->validated();
 
-      $file = $validation['photo'];
-      $extention = $file->getClientOriginalExtension();
-      $filename = time() . '-' . $extention;
-      $file->move('parent-images/', $filename);
-      $photo = $filename;
+    $file = $validation['photo'];
+    $extension = $file->getClientOriginalExtension();
+    $filename = time() . '-' . $extension;
+    $file->move('parent-images/', $filename);
+    $photo = $filename;
 
-      $info = array(
-        'gender' => $validation['gender'],
-        'blood_group' => $validation['blood_group'],
-        'birthday' => $validation['birthday'],
-        'phone' => $validation['phone'],
-        'address' => $validation['address'],
-        'photo' => $photo,
-      );
+    $info = array(
+      'gender' => $validation['gender'],
+      'blood_group' => $validation['blood_group'],
+      'birthday' => $validation['birthday'],
+      'phone' => $validation['phone'],
+      'address' => $validation['address'],
+      'photo' => $photo,
+    );
 
-      $validation['user_information'] = json_encode($info);
-      $parent = User::create([
-        'name' => $validation['name'],
-        'email' => $validation['email'],
-        'password' => bcrypt($validation['password']),
-        'user_information' => $validation['user_information'],
-        'role_id' => '4',
-        'school_id' => '1'
-      ]);
+    $validation['user_information'] = json_encode($info);
+    $parent = User::create([
+      'name' => $validation['name'],
+      'email' => $validation['email'],
+      'password' => bcrypt($validation['password']),
+      'user_information' => $validation['user_information'],
+      'role_id' => '4',
+      'school_id' => '1'
+    ]);
 
-      $parent->save();
+    $parent->save();
 
-      return response()->json([
-        'status' => 200,
-        'message' => 'Parent store successful.',
-      ]);
+    return response()->json([
+      'status' => 200,
+      'message' => 'Parent store successful.',
+    ]);
   }
 
   public function parent_Show(User $parent)
@@ -436,8 +436,8 @@ class AdminController extends Controller
     $validation = $request->validated();
 
     $file = $validation['photo'];
-    $extention = $file->getClientOriginalExtension();
-    $filename = time() . '-' . $extention;
+    $extension = $file->getClientOriginalExtension();
+    $filename = time() . '-' . $extension;
     $file->move('teacher-images/', $filename);
     $photo = $filename;
 

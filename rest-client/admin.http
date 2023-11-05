@@ -29,7 +29,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "name": "admin",
+  "name": "ade",
   "email": "admin@b.com",
   "photo" : "1699076927-jpeg",
   "gender" : "male",
