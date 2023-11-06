@@ -128,8 +128,6 @@ class AdminController extends Controller
       'school_id' => '1'
     ]);
 
-    //$admin->save();
-
     return response()->json([
       'status' => 200,
       'message' => 'Admin store successful.',
@@ -150,25 +148,21 @@ class AdminController extends Controller
 
   public function admin_update(AdminUpdateRequest $request, User $admin)
   {
-    //dd($request);
-    //$admin->update($validation);
     $validation = $request->validated();
 
-      if($validation['photo']){
-        $file = $validation['photo'];
-        $extension = $file->getClientOriginalExtension();
-        $filename = time() . '-' . $extension;
-        $file->move('admin-images/'. $filename);
-        $photo = $filename;
-      }else{
-        $user_info = User::where('id', $admin->id)->value('user_information');
-        $exsisting_filename = json_decode($user_info)->photo;
-        if ($exsisting_filename !== '') {
-          $photo = $exsisting_filename;
-        } else {
-          $photo = '';
-        }
-      }
+      $file = $validation['photo'];
+      $extension = $file->getClientOriginalExtension();
+      $filename = time() . '-' . $extension;
+      $file->move('admin-images/', $filename);
+      $photo = $filename;
+
+      // $user_info = User::where('id', $admin->id)->value('user_information');
+      // $exsisting_filename = json_decode($user_info)->photo;
+      // if ($exsisting_filename !== '') {
+      //   $photo = $exsisting_filename;
+      // } else {
+      //   $photo = '';
+      // }
 
       $info = array(
         'gender' => $validation['gender'],
@@ -190,7 +184,7 @@ class AdminController extends Controller
       return response()->json([
         'data' => $admin,
         'status' => 200,
-        'message' => 'admin update successful.',
+        'message' => 'Admin update successful.',
       ]);
 
   }
