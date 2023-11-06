@@ -151,14 +151,24 @@ class AdminController extends Controller
   public function admin_update(AdminUpdateRequest $request, User $admin)
   {
     //dd($request);
+    //$admin->update($validation);
     $validation = $request->validated();
-    $admin->update($validation);
 
-      $file = $validation['photo'];
-      $extension = $file->getClientOriginalExtension();
-      $filename = time() . '-' . $extension;
-      $file->move('admin-update-images/'. $filename);
-      $photo = $filename;
+      if($validation['photo']){
+        $file = $validation['photo'];
+        $extension = $file->getClientOriginalExtension();
+        $filename = time() . '-' . $extension;
+        $file->move('admin-images/'. $filename);
+        $photo = $filename;
+      }else{
+        $user_info = User::where('id', $admin->id)->value('user_information');
+        $exsisting_filename = json_decode($user_info)->photo;
+        if ($exsisting_filename !== '') {
+          $photo = $exsisting_filename;
+        } else {
+          $photo = '';
+        }
+      }
 
       $info = array(
         'gender' => $validation['gender'],
@@ -171,12 +181,11 @@ class AdminController extends Controller
 
       $validation['user_information'] = json_encode($info);
 
-      $admin = User::find($admin);
-      $admin->name = $validation['name'];
-      $admin->email = $validation['email'];
-      $admin->user_information = $validation['user_information'];
-      $admin->role_id = '1';
-      $admin->school_id = '1';
+      User::where('id', $admin->id)->update([
+        'name' => $validation['name'],
+        'email' => $validation['email'],
+        'user_information' => $validation['user_information']
+      ]);
 
       return response()->json([
         'data' => $admin,
