@@ -65,40 +65,6 @@ class AdminController extends Controller
     ]);
   }
 
-  // public function admin_store( AdminRequest $request ) {
-  //     return response()->json( [
-  //         'data' => [
-  //             $validated = $request->validated(),
-
-  //             // $file = $validated[ 'photo' ],
-  //             // $filename = time() . '-' . $file,
-  //             // //$file->move( 'admin-images/', $filename ),
-  //             // $photo = $filename,
-
-  //             $info = array(
-  //                 'gender' => $validated[ 'gender' ],
-  //                 'blood_group' => $validated[ 'blood_group' ],
-  //                 'birthday' => $validated[ 'birthday' ],
-  //                 'phone' => $validated[ 'phone' ],
-  //                 'address' => $validated[ 'address' ],
-  //                 'photo' => $validated[ 'photo' ],
-  //             ),
-  //             $validated[ 'user_information' ] = json_encode( $info ),
-
-  //             'admin' => User::create( [
-  //                 'name' => $validated[ 'name' ],
-  //                 'email' => $validated[ 'email' ],
-  //                 'password' => bcrypt( $validated[ 'password' ] ),
-  //                 'user_information' => $validated[ 'user_information' ],
-  //                 'role_id' => '1',
-  //                 'school_id' => '1'
-  //             ] ),
-  //         ],
-  //         'message' => 'Admin store successful.',
-  //     ] );
-
-  // }
-
   public function admin_store(AdminRequest $request)
   {
     $validation = $request->validated();
@@ -155,14 +121,6 @@ class AdminController extends Controller
       $filename = time() . '-' . $extension;
       $file->move('admin-images/', $filename);
       $photo = $filename;
-
-      // $user_info = User::where('id', $admin->id)->value('user_information');
-      // $exsisting_filename = json_decode($user_info)->photo;
-      // if ($exsisting_filename !== '') {
-      //   $photo = $exsisting_filename;
-      // } else {
-      //   $photo = '';
-      // }
 
       $info = array(
         'gender' => $validation['gender'],
@@ -247,8 +205,6 @@ class AdminController extends Controller
       'school_id' => '1'
     ]);
 
-    $student->save();
-
     return response()->json([
       'status' => 200,
       'message' => 'Student store successful.',
@@ -268,32 +224,36 @@ class AdminController extends Controller
 
   public function student_update(StudentUpdateRequest $request, User $student)
   {
-    $student->update($request->validated());
-    return response()->json([
-      'data' => [
-        $validated = $request->validated(),
+    $validation = $request->validated();
 
-        $info = array(
-          'gender' => $validated['gender'],
-          'blood_group' => $validated['blood_group'],
-          'birthday' => $validated['birthday'],
-          'phone' => $validated['phone'],
-          'address' => $validated['address'],
-          'photo' => $validated['photo']
-        ),
+      $file = $validation['photo'];
+      $extension = $file->getClientOriginalExtension();
+      $filename = time() . '-' . $extension;
+      $file->move('student-images/', $filename);
+      $photo = $filename;
 
-        $validated['user_information'] = json_encode($info),
+      $info = array(
+        'gender' => $validation['gender'],
+        'blood_group' => $validation['blood_group'],
+        'birthday' => $validation['birthday'],
+        'phone' => $validation['phone'],
+        'address' => $validation['address'],
+        'photo' => $photo,
+      );
 
-        'student' => $student->update([
-          'name' => $validated['name'],
-          'email' => $validated['email'],
-          'user_information' => $validated['user_information'],
-          'role_id' => '3',
-          'school_id' => '1'
-        ]),
-      ],
-      'message' => 'student update successful.',
-    ]);
+      $validation['user_information'] = json_encode($info);
+
+      User::where('id', $student->id)->update([
+        'name' => $validation['name'],
+        'email' => $validation['email'],
+        'user_information' => $validation['user_information']
+      ]);
+
+      return response()->json([
+        'data' => $student,
+        'status' => 200,
+        'message' => 'Student update successful.',
+      ]);
   }
 
   public function student_destroy(User $student)
@@ -355,8 +315,6 @@ class AdminController extends Controller
       'school_id' => '1'
     ]);
 
-    $parent->save();
-
     return response()->json([
       'status' => 200,
       'message' => 'Parent store successful.',
@@ -376,32 +334,36 @@ class AdminController extends Controller
 
   public function parent_update(ParentUpdateRequest $request, User $parent)
   {
-    // $parent->update( $request->validated() );
-    return response()->json([
-      'data' => [
-        $validated = $request->validated(),
+    $validation = $request->validated();
 
-        $info = array(
-          'gender' => $validated['gender'],
-          'blood_group' => $validated['blood_group'],
-          'birthday' => $validated['birthday'],
-          'phone' => $validated['phone'],
-          'address' => $validated['address'],
-          'photo' => $validated['photo']
-        ),
+      $file = $validation['photo'];
+      $extension = $file->getClientOriginalExtension();
+      $filename = time() . '-' . $extension;
+      $file->move('parent-images/', $filename);
+      $photo = $filename;
 
-        $validated['user_information'] = json_encode($info),
+      $info = array(
+        'gender' => $validation['gender'],
+        'blood_group' => $validation['blood_group'],
+        'birthday' => $validation['birthday'],
+        'phone' => $validation['phone'],
+        'address' => $validation['address'],
+        'photo' => $photo,
+      );
 
-        'parent' => $parent->update([
-          'name' => $validated['name'],
-          'email' => $validated['email'],
-          'user_information' => $validated['user_information'],
-          'role_id' => '4',
-          'school_id' => '1'
-        ]),
-      ],
-      'message' => 'parent update successful.',
-    ]);
+      $validation['user_information'] = json_encode($info);
+
+      User::where('id', $parent->id)->update([
+        'name' => $validation['name'],
+        'email' => $validation['email'],
+        'user_information' => $validation['user_information']
+      ]);
+
+      return response()->json([
+        'data' => $parent,
+        'status' => 200,
+        'message' => 'Parent update successful.',
+      ]);
   }
 
   public function parent_destroy(User $parent)
@@ -416,7 +378,6 @@ class AdminController extends Controller
   }
 
   //Teacher
-
   public function teacher_list(Request $request): JsonResponse
   {
     return response()->json([
@@ -463,8 +424,6 @@ class AdminController extends Controller
       'school_id' => '1'
     ]);
 
-    $teacher->save();
-
     return response()->json([
       'status' => 200,
       'message' => 'teacher store successful.',
@@ -484,37 +443,40 @@ class AdminController extends Controller
 
   public function teacher_update(TeacherUpdateRequest $request, User $teacher)
   {
-    $teacher->update($request->validated());
-    return response()->json([
-      'data' => [
-        $validated = $request->validated(),
+    $validation = $request->validated();
 
-        $info = array(
-          'gender' => $validated['gender'],
-          'blood_group' => $validated['blood_group'],
-          'birthday' => $validated['birthday'],
-          'phone' => $validated['phone'],
-          'address' => $validated['address'],
-          'photo' => $validated['photo']
-        ),
+      $file = $validation['photo'];
+      $extension = $file->getClientOriginalExtension();
+      $filename = time() . '-' . $extension;
+      $file->move('teacher-images/', $filename);
+      $photo = $filename;
 
-        $validated['user_information'] = json_encode($info),
+      $info = array(
+        'gender' => $validation['gender'],
+        'blood_group' => $validation['blood_group'],
+        'birthday' => $validation['birthday'],
+        'phone' => $validation['phone'],
+        'address' => $validation['address'],
+        'photo' => $photo,
+      );
 
-        'teacher' => $teacher->update([
-          'name' => $validated['name'],
-          'email' => $validated['email'],
-          'user_information' => $validated['user_information'],
-          'role_id' => '2',
-          'school_id' => '1'
-        ]),
-      ],
-      'message' => 'teacher update successful.',
-    ]);
+      $validation['user_information'] = json_encode($info);
+
+      User::where('id', $teacher->id)->update([
+        'name' => $validation['name'],
+        'email' => $validation['email'],
+        'user_information' => $validation['user_information']
+      ]);
+
+      return response()->json([
+        'data' => $teacher,
+        'status' => 200,
+        'message' => 'Teacher update successful.',
+      ]);
   }
 
   public function teacher_destroy(User $teacher)
   {
-    $teacher->delete();
     $teacher->delete();
     return response()->json([
       'data' => [
@@ -525,7 +487,6 @@ class AdminController extends Controller
   }
 
   //Class
-
   public function class_list(Request $request): JsonResponse
   {
     return response()->json([
@@ -594,7 +555,6 @@ class AdminController extends Controller
   }
 
   //Subject
-
   public function subject_list(Request $request): JsonResponse
   {
     return response()->json([
@@ -663,7 +623,6 @@ class AdminController extends Controller
   }
 
   //Grades
-
   public function grade_list(Request $request): JsonResponse
   {
     return response()->json([
@@ -732,7 +691,6 @@ class AdminController extends Controller
   }
 
   //Section
-
   public function section_list(Request $request): JsonResponse
   {
     return response()->json([
