@@ -34,7 +34,7 @@ class AuthController extends Controller
         'status' => 200,
         'username' => $user->name,
         'token' => $token,
-        'message' => 'Register successfull.'
+        'message' => 'Register successful.'
       ]);
     }
   }
@@ -78,7 +78,7 @@ class AuthController extends Controller
           'blood' => $blood,
           'token' => $token,
           'role_id' => $user->role_id,
-          'message' => 'Logged In successfull.'
+          'message' => 'Logged In successful.'
         ]);
       }
     }
