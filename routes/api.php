@@ -29,16 +29,16 @@ Route::controller(AdminController::class)->group(function () {
     Route::get('', 'profile');
   });
 
-    //Admin user route
-    Route::group(['prefix' => 'admin'], function () {
-        Route::get('', 'admin_list');
-        Route::post('', 'admin_store');
-        Route::group(['prefix' => '{admin}'], function () {
-            Route::get('', 'admin_show');
-            Route::put('', 'admin_update');
-            Route::delete('', 'admin_destroy');
-        });
+  //Admin user route
+  Route::group(['prefix' => 'admin'], function () {
+    Route::get('', 'admin_list');
+    Route::post('', 'admin_store');
+    Route::group(['prefix' => '{admin}'], function () {
+      Route::get('', 'admin_show');
+      Route::put('', 'admin_update');
+      Route::delete('', 'admin_destroy');
     });
+  });
 
   //Student user route
   Route::group(['prefix' => 'students'], function () {
