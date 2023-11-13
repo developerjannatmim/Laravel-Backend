@@ -31,11 +31,11 @@ class SyllabusRequest extends FormRequest {
 
     public function rules(): array {
         return [
-            'title' => 'required',
+            'title' => 'required|max:20',
             'class_id' => 'required',
             'subject_id' => 'required',
             'section_id' => 'required',
-            'file' => 'required',
+            'file' => 'required|image|mimes:jpg,jpeg,png,svg|max:2048',
         ];
     }
 }

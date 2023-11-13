@@ -1015,9 +1015,15 @@ class AdminController extends Controller
     return response()->json([
       'data' => [
         $validated = $request->validated(),
+
+        $file = $validated['file'],
+        $filename = time() . '-' . $file->getClientOriginalExtension(),
+        $file->move('syllabus-images/', $filename),
+        $file = $filename,
+
         'syllabus' => Syllabus::create([
           'title' => $validated['title'],
-          'file' => $validated['file'],
+          'file' => $file,
           'class_id' => $validated['class_id'],
           'subject_id' => $validated['subject_id'],
           'section_id' => $validated['section_id'],
@@ -1040,10 +1046,22 @@ class AdminController extends Controller
 
   public function syllabus_update(SyllabusUpdateRequest $request, Syllabus $syllabus)
   {
-    $syllabus->update($request->validated());
     return response()->json([
       'data' => [
-        'syllabus' => $syllabus,
+        $validated = $request->validated(),
+
+        $file = $validated['file'],
+        $filename = time() . '-' . $file->getClientOriginalExtension(),
+        $file->move('syllabus-images/', $filename),
+        $file = $filename,
+
+        'syllabus' => $syllabus->update([
+          'title' => $validated['title'],
+          'file' => $file,
+          'class_id' => $validated['class_id'],
+          'subject_id' => $validated['subject_id'],
+          'section_id' => $validated['section_id'],
+        ]),
       ],
       'message' => 'syllabus update successful.',
     ]);

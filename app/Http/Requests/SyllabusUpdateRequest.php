@@ -35,7 +35,7 @@ class SyllabusUpdateRequest extends FormRequest {
             'class_id' => 'required',
             'subject_id' => 'required',
             'section_id' => 'required',
-            'file' => 'required',
+            'file' => 'required|image|mimes:jpg,jpeg,png,svg|max:2048',
         ];
     }
 }
