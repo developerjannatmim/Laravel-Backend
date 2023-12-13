@@ -30,6 +30,11 @@ Route::controller(AdminController::class)->group(function () {
   });
 
   //Admin user route
+  Route::group(['prefix' => 'roles'], function () {
+    Route::get('', 'role_list');
+    Route::post('', 'role_store');
+  });
+
   Route::group(['prefix' => 'admin'], function () {
     Route::get('', 'admin_list');
     Route::post('', 'admin_store');

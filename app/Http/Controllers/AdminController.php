@@ -31,6 +31,7 @@ use App\Http\Requests\SyllabusUpdateRequest;
 use App\Http\Requests\TeacherRequest;
 use App\Http\Requests\TeacherUpdateRequest;
 use App\Models\Classes;
+use App\Models\Role;
 use App\Models\School;
 use App\Models\Subject;
 use App\Models\User;
@@ -47,6 +48,21 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
+
+  public function role_list(Request $request): JsonResponse
+  {
+    return response()->json([
+      'data' => [
+        'roles' => Role::all(
+          $column = [
+            'id',
+            'name',
+          ],
+        ),
+      ],
+      'message' => 'roles list',
+    ]);
+  }
 
   public function admin_list(Request $request): JsonResponse
   {
