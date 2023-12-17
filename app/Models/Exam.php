@@ -17,12 +17,10 @@ class Exam extends Model
      * @var array
      */
     protected $fillable = [
-        'name',
-        'exam_type',
+        'exam_category_id',
         'starting_time',
         'ending_time',
         'total_marks',
-        'status',
         'class_id',
         'section_id',
         'school_id'
@@ -32,21 +30,16 @@ class Exam extends Model
         return $this->belongsTo(Classes::class, 'class_id', 'id');
     }
 
-    protected $with = ['section', 'class'];
+    protected $with = ['section', 'class', 'exam_category'];
 
     public function section(): BelongsTo
     {
         return $this->belongsTo(Section::class, 'section_id', 'id');
     }
 
-    public function subject(): HasMany
+    public function exam_category(): BelongsTo
     {
-        return $this->hasMany(Subjects::class);
-    }
-
-    public function grade(): HasMany
-    {
-        return $this->hasMany(Grade::class);
+        return $this->belongsTo(ExamCategory::class, 'exam_category_id', 'id');
     }
 
     public function getStartingDateAttribute($date)

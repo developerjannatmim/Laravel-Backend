@@ -31,8 +31,7 @@ class ExamUpdateRequest extends FormRequest {
 
     public function rules(): array {
         return [
-            'name' => 'required',
-            'exam_type' => 'required',
+            'exam_category_id' => 'required',
             'starting_time' => 'required',
             'ending_time' => 'required',
             'total_marks' => 'required',

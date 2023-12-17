@@ -35,7 +35,7 @@ class MarkRequest extends FormRequest {
             'grade_point' => 'required',
             'comment' => 'required',
             'user_id' => 'required',
-            'exam_id' => 'required',
+            'exam_category_id' => 'required',
             'class_id' => 'required',
             'section_id' => 'required',
             'subject_id' => 'required',

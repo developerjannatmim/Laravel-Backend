@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AccountantRequest;
+use App\Http\Requests\AccountantUpdateRequest;
+use App\Http\Requests\ExamCategoryRequest;
+use App\Http\Requests\ExamCategoryUpdateRequest;
 use App\Http\Requests\AdminRequest;
 use App\Http\Requests\AdminUpdateRequest;
+use App\Http\Requests\LibrarianRequest;
+use App\Http\Requests\LibrarianUpdateRequest;
 use App\Http\Requests\ClassesRequest;
 use App\Http\Requests\ClassesUpdateRequest;
 use App\Http\Requests\ClassRoomRequest;
@@ -37,6 +43,7 @@ use App\Models\Subject;
 use App\Models\User;
 use App\Models\ClassRoom;
 use App\Models\Exam;
+use App\Models\ExamCategory;
 use App\Models\Grade;
 use App\Models\Mark;
 use App\Models\Routine;
@@ -64,6 +71,7 @@ class AdminController extends Controller
     ]);
   }
 
+//Admin
   public function admin_list(Request $request): JsonResponse
   {
     return response()->json([
@@ -171,6 +179,228 @@ class AdminController extends Controller
         'admin' => $admin,
       ],
       'message' => 'Admin deleted Successful.',
+    ]);
+  }
+
+//Lirarian
+  public function librarian_list(Request $request): JsonResponse
+  {
+    return response()->json([
+      'data' => [
+        'librarian' => User::where('role_id', 6)->where('school_id', 1)->get(
+          $column = [
+            'id',
+            'name',
+            'email',
+            'user_information'
+          ],
+        ),
+      ],
+      'message' => 'Librarian List Created',
+    ]);
+  }
+
+  public function librarian_store(LibrarianRequest $request)
+  {
+    $validation = $request->validated();
+
+    $file = $validation['photo'];
+    $extension = $file->getClientOriginalExtension();
+    $filename = time() . '-' . $extension;
+    $file->move('librarian-images/', $filename);
+    $photo = $filename;
+
+    $info = array(
+      'gender' => $validation['gender'],
+      'blood_group' => $validation['blood_group'],
+      'birthday' => $validation['birthday'],
+      'phone' => $validation['phone'],
+      'address' => $validation['address'],
+      'photo' => $photo,
+    );
+
+    $validation['user_information'] = json_encode($info);
+    $librarian = User::create([
+      'name' => $validation['name'],
+      'email' => $validation['email'],
+      'password' => bcrypt($validation['password']),
+      'user_information' => $validation['user_information'],
+      'role_id' => '6',
+      'school_id' => '1'
+    ]);
+
+    return response()->json([
+      'status' => 200,
+      'message' => 'Librarian store successful.',
+    ]);
+
+  }
+
+  public function librarian_Show(User $librarian)
+  {
+    $librarian->user_information = json_decode($librarian->user_information);
+    return response()->json([
+      'data' => [
+        'librarian' => $librarian,
+      ],
+      'message' => 'Librarian show successful.',
+    ]);
+  }
+
+  public function librarian_update(LibrarianUpdateRequest $request, User $librarian)
+  {
+    $validation = $request->validated();
+
+      $file = $validation['photo'];
+      $extension = $file->getClientOriginalExtension();
+      $filename = time() . '-' . $extension;
+      $file->move('librarian-images/', $filename);
+      $photo = $filename;
+
+      $info = array(
+        'gender' => $validation['gender'],
+        'blood_group' => $validation['blood_group'],
+        'birthday' => $validation['birthday'],
+        'phone' => $validation['phone'],
+        'address' => $validation['address'],
+        'photo' => $photo,
+      );
+
+      $validation['user_information'] = json_encode($info);
+
+      User::where('id', $librarian->id)->update([
+        'name' => $validation['name'],
+        'email' => $validation['email'],
+        'user_information' => $validation['user_information']
+      ]);
+
+      return response()->json([
+        'data' => $librarian,
+        'status' => 200,
+        'message' => 'Librarian update successful.',
+      ]);
+
+  }
+
+  public function librarian_destroy(User $librarian)
+  {
+    $librarian->delete();
+    return response()->json([
+      'data' => [
+        'librarian' => $librarian,
+      ],
+      'message' => 'librarian deleted Successful.',
+    ]);
+  }
+
+//Accountant
+  public function accountant_list(Request $request): JsonResponse
+  {
+    return response()->json([
+      'data' => [
+        'accountant' => User::where('role_id', 5)->where('school_id', 1)->get(
+          $column = [
+            'id',
+            'name',
+            'email',
+            'user_information'
+          ],
+        ),
+      ],
+      'message' => 'accountant List Created',
+    ]);
+  }
+
+  public function accountant_store(AccountantRequest $request)
+  {
+    $validation = $request->validated();
+
+    $file = $validation['photo'];
+    $extension = $file->getClientOriginalExtension();
+    $filename = time() . '-' . $extension;
+    $file->move('accountant-images/', $filename);
+    $photo = $filename;
+
+    $info = array(
+      'gender' => $validation['gender'],
+      'blood_group' => $validation['blood_group'],
+      'birthday' => $validation['birthday'],
+      'phone' => $validation['phone'],
+      'address' => $validation['address'],
+      'photo' => $photo,
+    );
+
+    $validation['user_information'] = json_encode($info);
+    $accountant = User::create([
+      'name' => $validation['name'],
+      'email' => $validation['email'],
+      'password' => bcrypt($validation['password']),
+      'user_information' => $validation['user_information'],
+      'role_id' => '5',
+      'school_id' => '1'
+    ]);
+
+    return response()->json([
+      'status' => 200,
+      'message' => 'Accountant store successful.',
+    ]);
+
+  }
+
+  public function accountant_show(User $accountant)
+  {
+    $accountant->user_information = json_decode($accountant->user_information);
+    return response()->json([
+      'data' => [
+        'accountant' => $accountant,
+      ],
+      'message' => 'Accountant show successful.',
+    ]);
+  }
+
+  public function accountant_update(AccountantUpdateRequest $request, User $accountant)
+  {
+    $validation = $request->validated();
+
+      $file = $validation['photo'];
+      $extension = $file->getClientOriginalExtension();
+      $filename = time() . '-' . $extension;
+      $file->move('accountant-images/', $filename);
+      $photo = $filename;
+
+      $info = array(
+        'gender' => $validation['gender'],
+        'blood_group' => $validation['blood_group'],
+        'birthday' => $validation['birthday'],
+        'phone' => $validation['phone'],
+        'address' => $validation['address'],
+        'photo' => $photo,
+      );
+
+      $validation['user_information'] = json_encode($info);
+
+      User::where('id', $accountant->id)->update([
+        'name' => $validation['name'],
+        'email' => $validation['email'],
+        'user_information' => $validation['user_information']
+      ]);
+
+      return response()->json([
+        'data' => $accountant,
+        'status' => 200,
+        'message' => 'Accountant update successful.',
+      ]);
+
+  }
+
+  public function accountant_destroy(User $accountant)
+  {
+    $accountant->delete();
+    return response()->json([
+      'data' => [
+        'accountant' => $accountant,
+      ],
+      'message' => 'Accountant deleted Successful.',
     ]);
   }
 
@@ -768,6 +998,71 @@ class AdminController extends Controller
     ]);
   }
 
+  //Exam Category
+
+  public function exam_category_list(Request $request): JsonResponse
+  {
+    return response()->json([
+      'data' => [
+        'exam_category' => ExamCategory::where('school_id', 1)->get(
+          $column = [
+            'id',
+            'name',
+          ],
+        ),
+      ],
+      'message' => 'Exam Category List Created',
+    ]);
+  }
+
+  public function exam_category_store(ExamCategoryRequest $request)
+  {
+    return response()->json([
+      'data' => [
+        //$sections = Section::get()->where( 'school_id', 1 ),
+
+        $validated = $request->validated(),
+        'exam_category' => ExamCategory::create([
+          'name' => $validated['name'],
+          'school_id' => '1'
+        ]),
+      ],
+      'message' => 'exam_category store successful.',
+    ]);
+  }
+
+  public function exam_category_show(ExamCategory $exam_category)
+  {
+    return response()->json([
+      'data' => [
+        'exam_category' => $exam_category,
+      ],
+      'message' => 'exam_category show successful.',
+    ]);
+  }
+
+  public function exam_category_update(ExamCategoryUpdateRequest $request, ExamCategory $exam_category)
+  {
+    $exam_category->update($request->validated());
+    return response()->json([
+      'data' => [
+        'exam_category' => $exam_category,
+      ],
+      'message' => 'exam_category update successful.',
+    ]);
+  }
+
+  public function exam_category_destroy(ExamCategory $exam_category)
+  {
+    $exam_category->delete();
+    return response()->json([
+      'data' => [
+        'exam_category' => $exam_category,
+      ],
+      'message' => 'exam_category deleted Successful.',
+    ]);
+  }
+
   //Exam
 
   public function exam_list(Request $request): JsonResponse
@@ -777,12 +1072,10 @@ class AdminController extends Controller
         'exams' => Exam::where('school_id', 1)->get(
           $column = [
             'id',
-            'name',
-            'exam_type',
+            'exam_category_id',
             'starting_time',
             'ending_time',
             'total_marks',
-            'status',
             'class_id',
             'section_id'
           ],
@@ -800,12 +1093,10 @@ class AdminController extends Controller
 
         $validated = $request->validated(),
         'exam' => Exam::create([
-          'name' => $validated['name'],
-          'exam_type' => $validated['exam_type'],
+          'name' => $validated['exam_category_id'],
           'starting_time' => $validated['starting_time'],
           'ending_time' => $validated['ending_time'],
           'total_marks' => $validated['total_marks'],
-          'status' => 'pending',
           'class_id' => $validated['class_id'],
           'section_id' => $validated['section_id'],
           'school_id' => '1'
@@ -860,7 +1151,7 @@ class AdminController extends Controller
             'grade_point',
             'comment',
             'user_id',
-            'exam_id',
+            'exam_category_id',
             'class_id',
             'section_id',
             'subject_id'
@@ -881,7 +1172,7 @@ class AdminController extends Controller
           'grade_point' => $validated['grade_point'],
           'comment' => $validated['comment'],
           'user_id' => $validated['user_id'],
-          'exam_id' => $validated['exam_id'],
+          'exam_category_id' => $validated['exam_category_id'],
           'class_id' => $validated['class_id'],
           'section_id' => $validated['section_id'],
           'subject_id' => $validated['subject_id'],

@@ -29,12 +29,13 @@ Route::controller(AdminController::class)->group(function () {
     Route::get('', 'profile');
   });
 
-  //Admin user route
+
   Route::group(['prefix' => 'roles'], function () {
     Route::get('', 'role_list');
     Route::post('', 'role_store');
   });
 
+  //Admin user route
   Route::group(['prefix' => 'admin'], function () {
     Route::get('', 'admin_list');
     Route::post('', 'admin_store');
@@ -42,6 +43,39 @@ Route::controller(AdminController::class)->group(function () {
       Route::get('', 'admin_show');
       Route::put('', 'admin_update');
       Route::delete('', 'admin_destroy');
+    });
+  });
+
+  //Accountant user route
+  Route::group(['prefix' => 'accountant'], function () {
+    Route::get('', 'accountant_list');
+    Route::post('', 'accountant_store');
+    Route::group(['prefix' => '{accountant}'], function () {
+      Route::get('', 'accountant_show');
+      Route::put('', 'accountant_update');
+      Route::delete('', 'accountant_destroy');
+    });
+  });
+
+  //Librarian user route
+  Route::group(['prefix' => 'librarian'], function () {
+    Route::get('', 'librarian_list');
+    Route::post('', 'librarian_store');
+    Route::group(['prefix' => '{librarian}'], function () {
+      Route::get('', 'librarian_show');
+      Route::put('', 'librarian_update');
+      Route::delete('', 'librarian_destroy');
+    });
+  });
+
+  //Exam Category route
+  Route::group(['prefix' => 'exam_category'], function () {
+    Route::get('', 'exam_category_list');
+    Route::post('', 'exam_category_store');
+    Route::group(['prefix' => '{exam_category}'], function () {
+      Route::get('', 'exam_category_show');
+      Route::put('', 'exam_category_update');
+      Route::delete('', 'exam_category_destroy');
     });
   });
 

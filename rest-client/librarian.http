@@ -1,0 +1,44 @@
+### List
+GET http://127.0.0.1:8000/api/librarian
+Accept: application/json
+
+### Store
+POST http://127.0.0.1:8000/api/librarian
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "abdul1",
+  "email": "abdul1@b.co",
+  "password": "123456",
+  "photo" : "image.png",
+  "gender" : "male",
+  "blood_group" : "a+",
+  "birthday" : "12/2/2002",
+  "phone" : "4546",
+  "address" : "jessore"
+}
+
+### Show
+GET http://127.0.0.1:8000/api/librarian/46
+Accept: application/json
+
+### Update
+PUT http://127.0.0.1:8000/api/librarian/46
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "ade",
+  "email": "admin@b.com",
+  "photo" : "1699076927-jpeg",
+  "gender" : "male",
+  "blood_group" : "a+",
+  "birthday" : "12/2/2000999",
+  "phone" : "454622",
+  "address" : "jessore999"
+}
+
+### Delete
+DELETE  http://127.0.0.1:8000/api/librarian/4
+Accept: application/json

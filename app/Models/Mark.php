@@ -22,7 +22,7 @@ class Mark extends Model
         'comment'
     ];
 
-    protected $with = ['section', 'subject', 'class', 'exam', 'user'];
+    protected $with = ['exam_category', 'section', 'subject', 'class',  'user'];
 
     public function section(): BelongsTo
     {
@@ -39,14 +39,14 @@ class Mark extends Model
         return $this->belongsTo(Subject::class, 'subject_id', 'id');
     }
 
-    public function exam(): BelongsTo
-    {
-        return $this->belongsTo(Exam::class, 'exam_id', 'id');
-    }
-
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function exam_category(): BelongsTo
+    {
+        return $this->belongsTo(ExamCategory::class, 'exam_category_id', 'id');
     }
 
 }
