@@ -46,6 +46,39 @@ Route::controller(AdminController::class)->group(function () {
     });
   });
 
+  //Driver user route
+  Route::group(['prefix' => 'driver'], function () {
+    Route::get('', 'driver_list');
+    Route::post('', 'driver_store');
+    Route::group(['prefix' => '{driver}'], function () {
+      Route::get('', 'driver_show');
+      Route::put('', 'driver_update');
+      Route::delete('', 'driver_destroy');
+    });
+  });
+
+  //Vehicle user route
+  Route::group(['prefix' => 'vehicles'], function () {
+    Route::get('', 'vehicle_list');
+    Route::post('', 'vehicle_store');
+    Route::group(['prefix' => '{vehicles}'], function () {
+      Route::get('', 'vehicle_show');
+      Route::put('', 'vehicle_update');
+      Route::delete('', 'vehicle_destroy');
+    });
+  });
+
+  //Assign Student for vehicle
+  Route::group(['prefix' => 'assignStudents'], function () {
+    Route::get('', 'assignStudent_list');
+    Route::post('', 'assignStudent_store');
+    Route::group(['prefix' => '{assignStudents}'], function () {
+      Route::get('', 'assignStudent_show');
+      Route::put('', 'assignStudent_update');
+      Route::delete('', 'assignStudent_destroy');
+    });
+  });
+
   //Accountant user route
   Route::group(['prefix' => 'accountant'], function () {
     Route::get('', 'accountant_list');

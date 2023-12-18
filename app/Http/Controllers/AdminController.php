@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AssignStudentRequest;
+use App\Http\Requests\AssignStudentUpdateRequest;
 use App\Http\Requests\AccountantRequest;
 use App\Http\Requests\AccountantUpdateRequest;
+use App\Http\Requests\DriverRequest;
+use App\Http\Requests\DriverUpdateRequest;
+use App\Http\Requests\VehicleRequest;
+use App\Http\Requests\VehicleUpdateRequest;
 use App\Http\Requests\ExamCategoryRequest;
 use App\Http\Requests\ExamCategoryUpdateRequest;
 use App\Http\Requests\AdminRequest;
@@ -44,7 +50,9 @@ use App\Models\User;
 use App\Models\ClassRoom;
 use App\Models\Exam;
 use App\Models\ExamCategory;
+use App\Models\AssignStudent;
 use App\Models\Grade;
+use App\Models\Vehicle;
 use App\Models\Mark;
 use App\Models\Routine;
 use App\Models\Section;
@@ -293,6 +301,116 @@ class AdminController extends Controller
     ]);
   }
 
+//Driver
+  public function driver_list(Request $request): JsonResponse
+  {
+    return response()->json([
+      'data' => [
+        'driver' => User::where('role_id', 7)->where('school_id', 1)->get(
+          $column = [
+            'id',
+            'name',
+            'email',
+            'user_information'
+          ],
+        ),
+      ],
+      'message' => 'driver List Created',
+    ]);
+  }
+
+  public function driver_store(DriverRequest $request)
+  {
+    $validation = $request->validated();
+
+    $file = $validation['photo'];
+    $extension = $file->getClientOriginalExtension();
+    $filename = time() . '-' . $extension;
+    $file->move('driver-images/', $filename);
+    $photo = $filename;
+
+    $info = array(
+      'gender' => $validation['gender'],
+      'blood_group' => $validation['blood_group'],
+      'birthday' => $validation['birthday'],
+      'phone' => $validation['phone'],
+      'address' => $validation['address'],
+      'photo' => $photo,
+    );
+
+    $validation['user_information'] = json_encode($info);
+    $driver = User::create([
+      'name' => $validation['name'],
+      'email' => $validation['email'],
+      'password' => bcrypt($validation['password']),
+      'user_information' => $validation['user_information'],
+      'role_id' => '7',
+      'school_id' => '1'
+    ]);
+
+    return response()->json([
+      'status' => 200,
+      'message' => 'driver store successful.',
+    ]);
+
+  }
+
+  public function driver_show(User $driver)
+  {
+    $driver->user_information = json_decode($driver->user_information);
+    return response()->json([
+      'data' => [
+        'driver' => $driver,
+      ],
+      'message' => 'driver show successful.',
+    ]);
+  }
+
+  public function driver_update(DriverUpdateRequest $request, User $driver)
+  {
+    $validation = $request->validated();
+
+      $file = $validation['photo'];
+      $extension = $file->getClientOriginalExtension();
+      $filename = time() . '-' . $extension;
+      $file->move('driver-images/', $filename);
+      $photo = $filename;
+
+      $info = array(
+        'gender' => $validation['gender'],
+        'blood_group' => $validation['blood_group'],
+        'birthday' => $validation['birthday'],
+        'phone' => $validation['phone'],
+        'address' => $validation['address'],
+        'photo' => $photo,
+      );
+
+      $validation['user_information'] = json_encode($info);
+
+      User::where('id', $driver->id)->update([
+        'name' => $validation['name'],
+        'email' => $validation['email'],
+        'user_information' => $validation['user_information']
+      ]);
+
+      return response()->json([
+        'data' => $driver,
+        'status' => 200,
+        'message' => 'driver update successful.',
+      ]);
+
+  }
+
+  public function driver_destroy(User $driver)
+  {
+    $driver->delete();
+    return response()->json([
+      'data' => [
+        'driver' => $driver,
+      ],
+      'message' => 'driver deleted Successful.',
+    ]);
+  }
 //Accountant
   public function accountant_list(Request $request): JsonResponse
   {
@@ -729,6 +847,156 @@ class AdminController extends Controller
         'teacher' => $teacher,
       ],
       'message' => 'teacher deleted Successful.',
+    ]);
+  }
+
+  //Assign Student for vehicle
+  public function assignStudent_list(Request $request): JsonResponse
+  {
+    return response()->json([
+      'data' => [
+        'assignStudent' => AssignStudent::where('school_id', 1)->get(
+          $column = [
+            'id',
+            'vehicle_id',
+            'driver_id',
+            'student_id',
+            'class_id',
+          ],
+        ),
+      ],
+      'message' => 'assignStudent list',
+    ]);
+  }
+
+  public function assignStudent_store(AssignStudentRequest $request)
+  {
+    return response()->json([
+      'data' => [
+        $validation = $request->validated(),
+        'assignStudent' => AssignStudent::create([
+          'vehicle_id' => $validation['vehicle_id'],
+          'driver_id' => $validation['driver_id'],
+          'student_id' => $validation['student_id'],
+          'class_id' => $validation['class_id'],
+          'school_id' => '1'
+        ]),
+      ],
+      'message' => 'assignStudent store successful.',
+    ]);
+  }
+
+  public function assignStudent_show(AssignStudent $assignStudents)
+  {
+    return response()->json([
+      'data' => [
+        'assignStudent' => $assignStudents,
+      ],
+      'message' => 'assignStudent show successful.',
+    ]);
+  }
+
+  public function assignStudent_update(AssignStudentUpdateRequest $request, AssignStudent $assignStudents)
+  {
+    $assignStudents->update($request->validated());
+    return response()->json([
+      'data' => [
+        'assignStudent' => $assignStudents->update([
+          'vehicle_id' => $validation['vehicle_id'],
+          'driver_id' => $validation['driver_id'],
+          'student_id' => $validation['student_id'],
+          'class_id' => $validation['class_id'],
+          'school_id' => '1'
+        ]),
+      ],
+      'message' => 'assignStudent update successful.',
+    ]);
+  }
+
+  public function assignStudent_destroy(AssignStudent $assignStudents)
+  {
+    $assignStudents->delete();
+    return response()->json([
+      'data' => [
+        'assignStudent' => $assignStudents,
+      ],
+      'message' => 'assignStudent deleted Successful.',
+    ]);
+  }
+  //Vehicle
+  public function vehicle_list(Request $request): JsonResponse
+  {
+    return response()->json([
+      'data' => [
+        'vehicle' => Vehicle::where('school_id', 1)->get(
+          $column = [
+            'id',
+            'vehicle_model',
+            'vehicle_info',
+            'driver_id',
+            'capacity',
+            'route',
+          ],
+        ),
+      ],
+      'message' => 'vehicle list',
+    ]);
+  }
+
+  public function vehicle_store(VehicleRequest $request)
+  {
+    return response()->json([
+      'data' => [
+        $validation = $request->validated(),
+        'vehicle' => Vehicle::create([
+          'vehicle_model' => $validation['vehicle_model'],
+          'vehicle_info' => $validation['vehicle_info'],
+          'driver_id' => $validation['driver_id'],
+          'capacity' => $validation['capacity'],
+          'route' => $validation['route'],
+          'school_id' => '1'
+        ]),
+      ],
+      'message' => 'vehicle store successful.',
+    ]);
+  }
+
+  public function vehicle_show(Vehicle $vehicles)
+  {
+    return response()->json([
+      'data' => [
+        'vehicle' => $vehicles,
+      ],
+      'message' => 'vehicle show successful.',
+    ]);
+  }
+
+  public function vehicle_update(VehicleUpdateRequest $request, Vehicle $vehicles)
+  {
+    $vehicles->update($request->validated());
+    return response()->json([
+      'data' => [
+        'vehicle' => $vehicles->update([
+          'vehicle_model' => $validation['vehicle_model'],
+          'vehicle_info' => $validation['vehicle_info'],
+          'driver_id' => $validation['driver_id'],
+          'capacity' => $validation['capacity'],
+          'route' => $validation['route'],
+          'school_id' => '1'
+        ]),
+      ],
+      'message' => 'vehicle update successful.',
+    ]);
+  }
+
+  public function vehicle_destroy(Vehicle $vehicles)
+  {
+    $vehicles->delete();
+    return response()->json([
+      'data' => [
+        'vehicle' => $vehicles,
+      ],
+      'message' => 'vehicle deleted Successful.',
     ]);
   }
 
