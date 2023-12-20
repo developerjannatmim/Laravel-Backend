@@ -68,6 +68,17 @@ Route::controller(AdminController::class)->group(function () {
     });
   });
 
+  //Driver user route
+  Route::group(['prefix' => 'event'], function () {
+    Route::get('', 'event_list');
+    Route::post('', 'event_store');
+    Route::group(['prefix' => '{event}'], function () {
+      Route::get('', 'event_show');
+      Route::put('', 'event_update');
+      Route::delete('', 'event_destroy');
+    });
+  });
+
   //Vehicle user route
   Route::group(['prefix' => 'vehicles'], function () {
     Route::get('', 'vehicle_list');

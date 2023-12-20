@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AssignStudentRequest;
 use App\Http\Requests\AssignStudentUpdateRequest;
+use App\Http\Requests\EventRequest;
+use App\Http\Requests\EventUpdateRequest;
 use App\Http\Requests\BackOfficeRequest;
 use App\Http\Requests\BackOfficeUpdateRequest;
 use App\Http\Requests\AccountantRequest;
@@ -59,6 +61,7 @@ use App\Models\Vehicle;
 use App\Models\Mark;
 use App\Models\Routine;
 use App\Models\Section;
+use App\Models\Event;
 use App\Models\Syllabus;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -853,7 +856,78 @@ class AdminController extends Controller
     ]);
   }
 
-  //Back  Office for vehicle
+  //events
+  public function event_list(Request $request): JsonResponse
+  {
+    return response()->json([
+      'data' => [
+        'event' => Event::where('school_id', 1)->get(
+          $column = [
+            'id',
+            'title',
+            'date',
+            'status',
+          ],
+        ),
+      ],
+      'message' => 'event list',
+    ]);
+  }
+
+  public function event_store(EventRequest $request)
+  {
+    return response()->json([
+      'data' => [
+        $validation = $request->validated(),
+        'event' => Event::create([
+          'title' => $validation['title'],
+          'date' => $validation['date'],
+          'status' => $validation['status'],
+          'school_id' => '1'
+        ]),
+      ],
+      'message' => 'event store successful.',
+    ]);
+  }
+
+  public function event_show(Event $event)
+  {
+    return response()->json([
+      'data' => [
+        'event' => $event,
+      ],
+      'message' => 'event show successful.',
+    ]);
+  }
+
+  public function event_update(EventUpdateRequest $request, Event $event)
+  {
+    $event->update($request->validated());
+    return response()->json([
+      'data' => [
+        'event' => $event->update([
+          'title' => $validation['title'],
+          'date' => $validation['date'],
+          'status' => $validation['status'],
+          'school_id' => '1'
+        ]),
+      ],
+      'message' => 'event update successful.',
+    ]);
+  }
+
+  public function event_destroy(Event $event)
+  {
+    $event->delete();
+    return response()->json([
+      'data' => [
+        'event' => $event,
+      ],
+      'message' => 'event deleted Successful.',
+    ]);
+  }
+
+  //Back  Office
   public function backOffice_list(Request $request): JsonResponse
   {
     return response()->json([
