@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AssignStudentRequest;
 use App\Http\Requests\AssignStudentUpdateRequest;
+use App\Http\Requests\BackOfficeRequest;
+use App\Http\Requests\BackOfficeUpdateRequest;
 use App\Http\Requests\AccountantRequest;
 use App\Http\Requests\AccountantUpdateRequest;
 use App\Http\Requests\DriverRequest;
@@ -46,6 +48,7 @@ use App\Models\Classes;
 use App\Models\Role;
 use App\Models\School;
 use App\Models\Subject;
+use App\Models\BackOffice;
 use App\Models\User;
 use App\Models\ClassRoom;
 use App\Models\Exam;
@@ -850,6 +853,80 @@ class AdminController extends Controller
     ]);
   }
 
+  //Back  Office for vehicle
+  public function backOffice_list(Request $request): JsonResponse
+  {
+    return response()->json([
+      'data' => [
+        'backOffice' => BackOffice::where('school_id', 1)->get(
+          $column = [
+            'id',
+            'name',
+            'author',
+            'copies',
+            'availble_copies',
+          ],
+        ),
+      ],
+      'message' => 'backOffice list',
+    ]);
+  }
+
+  public function backOffice_store(BackOfficeRequest $request)
+  {
+    return response()->json([
+      'data' => [
+        $validation = $request->validated(),
+        'backOffice' => BackOffice::create([
+          'name' => $validation['name'],
+          'author' => $validation['author'],
+          'copies' => $validation['copies'],
+          'availble_copies' => $validation['availble_copies'],
+          'school_id' => '1'
+        ]),
+      ],
+      'message' => 'backOffice store successful.',
+    ]);
+  }
+
+  public function backOffice_show(BackOffice $backOffice)
+  {
+    return response()->json([
+      'data' => [
+        'backOffice' => $backOffice,
+      ],
+      'message' => 'backOffice show successful.',
+    ]);
+  }
+
+  public function backOffice_update(BackOfficeUpdateRequest $request, BackOffice $backOffice)
+  {
+    $backOffice->update($request->validated());
+    return response()->json([
+      'data' => [
+        'backOffice' => $backOffice->update([
+          'name' => $validation['name'],
+          'author' => $validation['author'],
+          'copies' => $validation['copies'],
+          'availble_copies' => $validation['availble_copies'],
+          'school_id' => '1'
+        ]),
+      ],
+      'message' => 'backOffice update successful.',
+    ]);
+  }
+
+  public function backOffice_destroy(BackOffice $backOffice)
+  {
+    $backOffice->delete();
+    return response()->json([
+      'data' => [
+        'backOffice' => $backOffice,
+      ],
+      'message' => 'backOffice deleted Successful.',
+    ]);
+  }
+
   //Assign Student for vehicle
   public function assignStudent_list(Request $request): JsonResponse
   {
@@ -923,6 +1000,7 @@ class AdminController extends Controller
       'message' => 'assignStudent deleted Successful.',
     ]);
   }
+
   //Vehicle
   public function vehicle_list(Request $request): JsonResponse
   {

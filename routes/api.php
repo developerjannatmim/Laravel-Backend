@@ -57,6 +57,17 @@ Route::controller(AdminController::class)->group(function () {
     });
   });
 
+  //Driver user route
+  Route::group(['prefix' => 'backOffice'], function () {
+    Route::get('', 'backOffice_list');
+    Route::post('', 'backOffice_store');
+    Route::group(['prefix' => '{backOffice}'], function () {
+      Route::get('', 'backOffice_show');
+      Route::put('', 'backOffice_update');
+      Route::delete('', 'backOffice_destroy');
+    });
+  });
+
   //Vehicle user route
   Route::group(['prefix' => 'vehicles'], function () {
     Route::get('', 'vehicle_list');
