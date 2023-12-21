@@ -21,22 +21,6 @@ class School extends Model
         'phone',
         'address',
         'school_info',
-        'status'
+        'status',
     ];
-
-    public function class(): HasMany
-    {
-        return $this->hasMany(Classes::class);
-    }
-
-    public function department(): HasMany
-    {
-        return $this->hasMany(Department::class);
-    }
-
-    public function class_room(): HasMany
-    {
-        return $this->hasMany(ClassRoom::class);
-    }
-
 }

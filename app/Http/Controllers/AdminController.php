@@ -1996,7 +1996,7 @@ class AdminController extends Controller
             'phone',
             'address',
             'school_info',
-            'status'
+            'status',
           ],
         ),
       ],
@@ -2015,7 +2015,7 @@ class AdminController extends Controller
           'phone' => $validated['phone'],
           'address' => $validated['address'],
           'school_info' => $validated['school_info'],
-          'status' => "active"
+          'status' => $validated['status'],
         ]),
       ],
       'message' => 'school store successful.',
