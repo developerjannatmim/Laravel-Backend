@@ -266,6 +266,17 @@ Route::group(['prefix' => 'subjects'], function () {
     });
   });
 
+  //User routes
+  Route::group(['prefix' => 'users'], function () {
+    Route::get('', 'user_list');
+    Route::post('', 'user_store');
+    Route::group(['prefix' => '{user}'], function () {
+      Route::get('', 'user_show');
+      Route::put('', 'user_update');
+      Route::delete('', 'user_destroy');
+    });
+  });
+
 //Syllabus routes
 Route::group(['prefix' => 'syllabuses'], function () {
     Route::get('', 'syllabus_list');

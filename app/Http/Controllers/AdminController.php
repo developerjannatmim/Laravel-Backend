@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AssignStudentRequest;
 use App\Http\Requests\AssignStudentUpdateRequest;
+use App\Http\Requests\UserRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\Http\Requests\EventRequest;
 use App\Http\Requests\EventUpdateRequest;
 use App\Http\Requests\BackOfficeRequest;
@@ -528,6 +530,118 @@ class AdminController extends Controller
         'accountant' => $accountant,
       ],
       'message' => 'Accountant deleted Successful.',
+    ]);
+  }
+
+  //Users
+  public function user_list(Request $request): JsonResponse
+  {
+    return response()->json([
+      'data' => [
+        'users' => User::where('school_id', 1)->get(
+          $column = [
+            'id',
+            'name',
+            'email',
+            'role_id',
+            'user_information'
+          ],
+        ),
+      ],
+      'message' => 'users List Created',
+    ]);
+  }
+
+  public function user_store(UserRequest $request)
+  {
+    $validation = $request->validated();
+
+    $file = $validation['photo'];
+    $extension = $file->getClientOriginalExtension();
+    $filename = time() . '-' . $extension;
+    $file->move('user-images/', $filename);
+    $photo = $filename;
+
+    $info = array(
+      'gender' => $validation['gender'],
+      'blood_group' => $validation['blood_group'],
+      'birthday' => $validation['birthday'],
+      'phone' => $validation['phone'],
+      'address' => $validation['address'],
+      'photo' => $photo,
+    );
+
+    $validation['user_information'] = json_encode($info);
+    $user = User::create([
+      'name' => $validation['name'],
+      'email' => $validation['email'],
+      'password' => bcrypt($validation['password']),
+      'user_information' => $validation['user_information'],
+      'role_id' =>  $validation['role_id'],
+      'school_id' => '1',
+    ]);
+
+    return response()->json([
+      'status' => 200,
+      'message' => 'User store successful.',
+    ]);
+  }
+
+  public function user_show(User $user)
+  {
+    $user->user_information = json_decode($user->user_information);
+    return response()->json([
+      'data' => [
+        'user' => $user,
+      ],
+      'message' => 'user show successful.',
+    ]);
+  }
+
+  public function user_update(UserUpdateRequest $request, User $user)
+  {
+    $validation = $request->validated();
+
+      $file = $validation['photo'];
+      $extension = $file->getClientOriginalExtension();
+      $filename = time() . '-' . $extension;
+      $file->move('user-images/', $filename);
+      $photo = $filename;
+
+      $info = array(
+        'gender' => $validation['gender'],
+        'blood_group' => $validation['blood_group'],
+        'birthday' => $validation['birthday'],
+        'phone' => $validation['phone'],
+        'address' => $validation['address'],
+        'photo' => $photo,
+      );
+
+      $validation['user_information'] = json_encode($info);
+
+      User::where('id', $user->id)->update([
+        'name' => $validation['name'],
+        'email' => $validation['email'],
+        'password' => bcrypt($validation['password']),
+        'role_id' =>  $validation['role_id'],
+        'user_information' => $validation['user_information']
+      ]);
+
+      return response()->json([
+        'data' => $user,
+        'status' => 200,
+        'message' => 'User update successful.',
+      ]);
+  }
+
+  public function user_destroy(User $user)
+  {
+    $user->delete();
+    return response()->json([
+      'data' => [
+        'user' => $user,
+      ],
+      'message' => 'user deleted Successful.',
     ]);
   }
 
