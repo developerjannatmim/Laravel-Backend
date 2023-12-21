@@ -255,6 +255,17 @@ Route::group(['prefix' => 'subjects'], function () {
     });
   });
 
+  //User Role routes
+  Route::group(['prefix' => 'userRoles'], function () {
+    Route::get('', 'userRole_list');
+    Route::post('', 'userRole_store');
+    Route::group(['prefix' => '{userRole}'], function () {
+      Route::get('', 'userRole_show');
+      Route::put('', 'userRole_update');
+      Route::delete('', 'userRole_destroy');
+    });
+  });
+
 //Syllabus routes
 Route::group(['prefix' => 'syllabuses'], function () {
     Route::get('', 'syllabus_list');

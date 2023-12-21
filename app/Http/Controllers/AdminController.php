@@ -14,6 +14,8 @@ use App\Http\Requests\DriverRequest;
 use App\Http\Requests\DriverUpdateRequest;
 use App\Http\Requests\VehicleRequest;
 use App\Http\Requests\VehicleUpdateRequest;
+use App\Http\Requests\UserRoleRequest;
+use App\Http\Requests\UserRoleUpdateRequest;
 use App\Http\Requests\ExamCategoryRequest;
 use App\Http\Requests\ExamCategoryUpdateRequest;
 use App\Http\Requests\AdminRequest;
@@ -58,6 +60,7 @@ use App\Models\ExamCategory;
 use App\Models\AssignStudent;
 use App\Models\Grade;
 use App\Models\Vehicle;
+use App\Models\UserRole;
 use App\Models\Mark;
 use App\Models\Routine;
 use App\Models\Section;
@@ -1288,6 +1291,66 @@ class AdminController extends Controller
     ]);
   }
 
+  //Grades
+  public function userRole_list(Request $request): JsonResponse
+  {
+    return response()->json([
+      'data' => [
+        'userRoles' => UserRole::get(
+          $column = [
+            'id',
+            'name',
+          ],
+        ),
+      ],
+      'message' => 'userRole List Created',
+    ]);
+  }
+
+  public function userRole_store(UserRoleRequest $request)
+  {
+    return response()->json([
+      'data' => [
+        $validated = $request->validated(),
+        'userRole' => UserRole::create([
+          'name' => $validated['name'],
+        ]),
+      ],
+      'message' => 'userRole store successful.',
+    ]);
+  }
+
+  public function userRole_show(UserRole $userRole)
+  {
+    return response()->json([
+      'data' => [
+        'userRole' => $userRole,
+      ],
+      'message' => 'userRole show successful.',
+    ]);
+  }
+
+  public function userRole_update(UserRoleUpdateRequest $request, UserRole $userRole)
+  {
+    $userRole->update($request->validated());
+    return response()->json([
+      'data' => [
+        'userRole' => $userRole,
+      ],
+      'message' => 'userRole update successful.',
+    ]);
+  }
+
+  public function userRole_destroy(UserRole $userRole)
+  {
+    $userRole->delete();
+    return response()->json([
+      'data' => [
+        'userRole' => $userRole,
+      ],
+      'message' => 'userRole deleted Successful.',
+    ]);
+  }
   //Grades
   public function grade_list(Request $request): JsonResponse
   {
