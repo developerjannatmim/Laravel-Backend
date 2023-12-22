@@ -57,7 +57,18 @@ Route::controller(AdminController::class)->group(function () {
     });
   });
 
-  //Driver user route
+  //Admission route
+  Route::group(['prefix' => 'admission'], function () {
+    Route::get('', 'admission_list');
+    Route::post('', 'admission_store');
+    Route::group(['prefix' => '{admission}'], function () {
+      Route::get('', 'admission_show');
+      Route::put('', 'admission_update');
+      Route::delete('', 'admission_destroy');
+    });
+  });
+
+  //Back Office route
   Route::group(['prefix' => 'backOffice'], function () {
     Route::get('', 'backOffice_list');
     Route::post('', 'backOffice_store');
@@ -68,7 +79,7 @@ Route::controller(AdminController::class)->group(function () {
     });
   });
 
-  //Driver user route
+  //Event route
   Route::group(['prefix' => 'event'], function () {
     Route::get('', 'event_list');
     Route::post('', 'event_store');
@@ -79,7 +90,7 @@ Route::controller(AdminController::class)->group(function () {
     });
   });
 
-  //Vehicle user route
+  //Vehicle route
   Route::group(['prefix' => 'vehicles'], function () {
     Route::get('', 'vehicle_list');
     Route::post('', 'vehicle_store');

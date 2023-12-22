@@ -14,6 +14,8 @@ use App\Http\Requests\AccountantRequest;
 use App\Http\Requests\AccountantUpdateRequest;
 use App\Http\Requests\DriverRequest;
 use App\Http\Requests\DriverUpdateRequest;
+use App\Http\Requests\AdmissionRequest;
+use App\Http\Requests\AdmissionUpdateRequest;
 use App\Http\Requests\VehicleRequest;
 use App\Http\Requests\VehicleUpdateRequest;
 use App\Http\Requests\UserRoleRequest;
@@ -64,6 +66,7 @@ use App\Models\Grade;
 use App\Models\Vehicle;
 use App\Models\UserRole;
 use App\Models\Mark;
+use App\Models\Admission;
 use App\Models\Routine;
 use App\Models\Section;
 use App\Models\Event;
@@ -312,6 +315,122 @@ class AdminController extends Controller
     ]);
   }
 
+//Admission
+  public function admission_list(Request $request): JsonResponse
+  {
+    return response()->json([
+      'data' => [
+        'admission' => Admission::get(
+          $column = [
+            'id',
+            'name',
+            'email',
+            'password',
+            'class_id',
+            'section_id',
+            'dob',
+            'gender',
+            'blood_group',
+            'address',
+            'phone',
+            'image',
+          ],
+        ),
+      ],
+      'message' => 'admission List Created',
+    ]);
+  }
+
+  public function admission_store(AdmissionRequest $request)
+  {
+    $validation = $request->validated();
+
+    $file = $validation['image'];
+    $extension = $file->getClientOriginalExtension();
+    $filename = time() . '-' . $extension;
+    $file->move('admission-images/', $filename);
+    $image = $filename;
+
+    $validation['user_information'] = json_encode($info);
+    $admission = Admission::create([
+      'name' => $validation['name'],
+      'email' => $validation['email'],
+      'password' => bcrypt($validation['password']),
+      'gender' => $validation['gender'],
+      'blood_group' => $validation['blood_group'],
+      'dob' => $validation['dob'],
+      'phone' => $validation['phone'],
+      'class_id' => $validation['class_id'],
+      'section_id' => $validation['section_id'],
+      'address' => $validation['address'],
+      'image' => $image,
+    ]);
+
+    return response()->json([
+      'status' => 200,
+      'message' => 'admission store successful.',
+    ]);
+
+  }
+
+  public function admission_show(User $admission)
+  {
+    $admission->user_information = json_decode($admission->user_information);
+    return response()->json([
+      'data' => [
+        'admission' => $admission,
+      ],
+      'message' => 'admission show successful.',
+    ]);
+  }
+
+  public function admission_update(AdmissionUpdateRequest $request, User $admission)
+  {
+    $validation = $request->validated();
+
+      $file = $validation['image'];
+      $extension = $file->getClientOriginalExtension();
+      $filename = time() . '-' . $extension;
+      $file->move('admission-images/', $filename);
+      $image = $filename;
+
+      $validation['user_information'] = json_encode($info);
+
+      Admission::where('id', $admission->id)->update([
+        'name' => $validation['name'],
+        'email' => $validation['email'],
+        'name' => $validation['name'],
+        'email' => $validation['email'],
+        'password' => bcrypt($validation['password']),
+        'gender' => $validation['gender'],
+        'blood_group' => $validation['blood_group'],
+        'dob' => $validation['dob'],
+        'phone' => $validation['phone'],
+        'class_id' => $validation['class_id'],
+        'section_id' => $validation['section_id'],
+        'address' => $validation['address'],
+        'image' => $image,
+      ]);
+
+      return response()->json([
+        'data' => $admission,
+        'status' => 200,
+        'message' => 'admission update successful.',
+      ]);
+
+  }
+
+  public function admission_destroy(User $admission)
+  {
+    $admission->delete();
+    return response()->json([
+      'data' => [
+        'admission' => $admission,
+      ],
+      'message' => 'admission deleted Successful.',
+    ]);
+  }
+
 //Driver
   public function driver_list(Request $request): JsonResponse
   {
@@ -422,6 +541,7 @@ class AdminController extends Controller
       'message' => 'driver deleted Successful.',
     ]);
   }
+
 //Accountant
   public function accountant_list(Request $request): JsonResponse
   {
@@ -1000,9 +1120,10 @@ class AdminController extends Controller
           'title' => $validation['title'],
           'date' => $validation['date'],
           'status' => $validation['status'],
-          'school_id' => '1'
+          'school_id' => '1',
         ]),
       ],
+      'status' => 200,
       'message' => 'event store successful.',
     ]);
   }
@@ -1026,9 +1147,10 @@ class AdminController extends Controller
           'title' => $validation['title'],
           'date' => $validation['date'],
           'status' => $validation['status'],
-          'school_id' => '1'
+          'school_id' => '1',
         ]),
       ],
+      'status' => 200,
       'message' => 'event update successful.',
     ]);
   }
@@ -1076,6 +1198,7 @@ class AdminController extends Controller
           'school_id' => '1'
         ]),
       ],
+      'status' => 200,
       'message' => 'backOffice store successful.',
     ]);
   }
@@ -1103,6 +1226,7 @@ class AdminController extends Controller
           'school_id' => '1'
         ]),
       ],
+      'status' => 200,
       'message' => 'backOffice update successful.',
     ]);
   }
@@ -1150,6 +1274,7 @@ class AdminController extends Controller
           'school_id' => '1'
         ]),
       ],
+      'status' => 200,
       'message' => 'assignStudent store successful.',
     ]);
   }
@@ -1177,6 +1302,7 @@ class AdminController extends Controller
           'school_id' => '1'
         ]),
       ],
+      'status' => 200,
       'message' => 'assignStudent update successful.',
     ]);
   }
@@ -1226,6 +1352,7 @@ class AdminController extends Controller
           'school_id' => '1'
         ]),
       ],
+      'status' => 200,
       'message' => 'vehicle store successful.',
     ]);
   }
@@ -1254,6 +1381,7 @@ class AdminController extends Controller
           'school_id' => '1'
         ]),
       ],
+      'status' => 200,
       'message' => 'vehicle update successful.',
     ]);
   }
@@ -1297,6 +1425,7 @@ class AdminController extends Controller
           'school_id' => '1'
         ]),
       ],
+      'status' => 200,
       'message' => 'class store successful.',
     ]);
   }
@@ -1322,6 +1451,7 @@ class AdminController extends Controller
           'school_id' => '1'
         ]),
       ],
+      'status' => 200,
       'message' => 'class update successful.',
     ]);
   }
@@ -1365,6 +1495,7 @@ class AdminController extends Controller
           'school_id' => '1'
         ]),
       ],
+      'status' => 200,
       'message' => 'subject store successful.',
     ]);
   }
@@ -1390,6 +1521,7 @@ class AdminController extends Controller
           'school_id' => '1'
         ]),
       ],
+      'status' => 200,
       'message' => 'subject update successful.',
     ]);
   }
@@ -1430,6 +1562,7 @@ class AdminController extends Controller
           'name' => $validated['name'],
         ]),
       ],
+      'status' => 200,
       'message' => 'userRole store successful.',
     ]);
   }
@@ -1451,6 +1584,7 @@ class AdminController extends Controller
       'data' => [
         'userRole' => $userRole,
       ],
+      'status' => 200,
       'message' => 'userRole update successful.',
     ]);
   }
