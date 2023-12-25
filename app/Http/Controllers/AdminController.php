@@ -350,8 +350,7 @@ class AdminController extends Controller
     $filename = time() . '-' . $extension;
     $file->move('admission-images/', $filename);
     $image = $filename;
-
-    $validation['user_information'] = json_encode($info);
+    
     $admission = Admission::create([
       'name' => $validation['name'],
       'email' => $validation['email'],
@@ -373,7 +372,7 @@ class AdminController extends Controller
 
   }
 
-  public function admission_show(User $admission)
+  public function admission_show(Admission $admission)
   {
     $admission->user_information = json_decode($admission->user_information);
     return response()->json([
@@ -384,7 +383,7 @@ class AdminController extends Controller
     ]);
   }
 
-  public function admission_update(AdmissionUpdateRequest $request, User $admission)
+  public function admission_update(AdmissionUpdateRequest $request, Admission $admission)
   {
     $validation = $request->validated();
 
@@ -394,11 +393,7 @@ class AdminController extends Controller
       $file->move('admission-images/', $filename);
       $image = $filename;
 
-      $validation['user_information'] = json_encode($info);
-
       Admission::where('id', $admission->id)->update([
-        'name' => $validation['name'],
-        'email' => $validation['email'],
         'name' => $validation['name'],
         'email' => $validation['email'],
         'password' => bcrypt($validation['password']),
@@ -420,7 +415,7 @@ class AdminController extends Controller
 
   }
 
-  public function admission_destroy(User $admission)
+  public function admission_destroy(Admission $admission)
   {
     $admission->delete();
     return response()->json([
@@ -1195,7 +1190,7 @@ class AdminController extends Controller
           'author' => $validation['author'],
           'copies' => $validation['copies'],
           'availble_copies' => $validation['availble_copies'],
-          'school_id' => '1'
+          'school_id' => '1',
         ]),
       ],
       'status' => 200,
@@ -1219,10 +1214,10 @@ class AdminController extends Controller
     return response()->json([
       'data' => [
         'backOffice' => $backOffice->update([
-          'name' => $validation['name'],
-          'author' => $validation['author'],
-          'copies' => $validation['copies'],
-          'availble_copies' => $validation['availble_copies'],
+          'name' => $request['name'],
+          'author' => $request['author'],
+          'copies' => $request['copies'],
+          'availble_copies' => $request['availble_copies'],
           'school_id' => '1'
         ]),
       ],
@@ -1295,10 +1290,10 @@ class AdminController extends Controller
     return response()->json([
       'data' => [
         'assignStudent' => $assignStudents->update([
-          'vehicle_id' => $validation['vehicle_id'],
-          'driver_id' => $validation['driver_id'],
-          'student_id' => $validation['student_id'],
-          'class_id' => $validation['class_id'],
+          'vehicle_id' => $request['vehicle_id'],
+          'driver_id' => $request['driver_id'],
+          'student_id' => $request['student_id'],
+          'class_id' => $request['class_id'],
           'school_id' => '1'
         ]),
       ],
@@ -1373,11 +1368,11 @@ class AdminController extends Controller
     return response()->json([
       'data' => [
         'vehicle' => $vehicles->update([
-          'vehicle_model' => $validation['vehicle_model'],
-          'vehicle_info' => $validation['vehicle_info'],
-          'driver_id' => $validation['driver_id'],
-          'capacity' => $validation['capacity'],
-          'route' => $validation['route'],
+          'vehicle_model' => $request['vehicle_model'],
+          'vehicle_info' => $request['vehicle_info'],
+          'driver_id' => $request['driver_id'],
+          'capacity' => $request['capacity'],
+          'route' => $request['route'],
           'school_id' => '1'
         ]),
       ],
@@ -1885,7 +1880,7 @@ class AdminController extends Controller
             'exam_category_id',
             'class_id',
             'section_id',
-            'subject_id'
+            'subject_id',
           ],
         ),
       ],
