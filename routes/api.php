@@ -46,6 +46,16 @@ Route::controller(AdminController::class)->group(function () {
     });
   });
 
+  Route::group(['prefix' => 'notice'], function () {
+    Route::get('', 'notice_list');
+    Route::post('', 'notice_store');
+    Route::group(['prefix' => '{notice}'], function () {
+      Route::get('', 'notice_show');
+      Route::put('', 'notice_update');
+      Route::delete('', 'notice_destroy');
+    });
+  });
+
   //Driver user route
   Route::group(['prefix' => 'driver'], function () {
     Route::get('', 'driver_list');

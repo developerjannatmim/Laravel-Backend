@@ -10,6 +10,8 @@ use App\Http\Requests\EventRequest;
 use App\Http\Requests\EventUpdateRequest;
 use App\Http\Requests\BackOfficeRequest;
 use App\Http\Requests\BackOfficeUpdateRequest;
+use App\Http\Requests\NoticeRequest;
+use App\Http\Requests\NoticeUpdateRequest;
 use App\Http\Requests\AccountantRequest;
 use App\Http\Requests\AccountantUpdateRequest;
 use App\Http\Requests\DriverRequest;
@@ -57,6 +59,7 @@ use App\Models\Role;
 use App\Models\School;
 use App\Models\Subject;
 use App\Models\BackOffice;
+use App\Models\Notice;
 use App\Models\User;
 use App\Models\ClassRoom;
 use App\Models\Exam;
@@ -1158,6 +1161,77 @@ class AdminController extends Controller
         'event' => $event,
       ],
       'message' => 'event deleted Successful.',
+    ]);
+  }
+
+  //Notice
+  public function notice_list(Request $request): JsonResponse
+  {
+    return response()->json([
+      'data' => [
+        'notice' => Notice::where('school_id', 1)->get(
+          $column = [
+            'id',
+            'publish_date',
+            'subject',
+            'school_id',
+          ],
+        ),
+      ],
+      'message' => 'notice list',
+    ]);
+  }
+
+  public function notice_store(NoticeRequest $request)
+  {
+    return response()->json([
+      'data' => [
+        $validation = $request->validated(),
+        'notice' => Notice::create([
+          'publish_date' => $validation['publish_date'],
+          'subject' => $validation['subject'],
+          'school_id' => '1',
+        ]),
+      ],
+      'status' => 200,
+      'message' => 'notice store successful.',
+    ]);
+  }
+
+  public function notice_show(Notice $notice)
+  {
+    return response()->json([
+      'data' => [
+        'notice' => $notice,
+      ],
+      'message' => 'notice show successful.',
+    ]);
+  }
+
+  public function notice_update(NoticeUpdateRequest $request, Notice $notice)
+  {
+    $notice->update($request->validated());
+    return response()->json([
+      'data' => [
+        'notice' => $notice->update([
+          'publish_date' => $request['publish_date'],
+          'subject' => $request['subject'],
+          'school_id' => '1'
+        ]),
+      ],
+      'status' => 200,
+      'message' => 'notice update successful.',
+    ]);
+  }
+
+  public function notice_destroy(Notice $notice)
+  {
+    $notice->delete();
+    return response()->json([
+      'data' => [
+        'notice' => $notice,
+      ],
+      'message' => 'notice deleted Successful.',
     ]);
   }
 
