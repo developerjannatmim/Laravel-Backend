@@ -60,23 +60,23 @@ class AuthController extends Controller
         ]);
       } else {
         $token = $user->createToken($user->email . '_Token')->plainTextToken;
-        //$user_info = User::where('id', $user->id)->value('user_information');
-        //$photo = json_decode($user_info)->photo;
-        // $gender = json_decode($user_info)->gender;
-        // $phone = json_decode($user_info)->phone;
-        // $birthday = json_decode($user_info)->birthday;
-        // $address = json_decode($user_info)->address;
-        // $blood = json_decode($user_info)->blood_group;
+        $user_info = User::where('id', $user->id)->value('user_information');
+        $photo = json_decode($user_info)->photo;
+        $gender = json_decode($user_info)->gender;
+        $phone = json_decode($user_info)->phone;
+        $birthday = json_decode($user_info)->birthday;
+        $address = json_decode($user_info)->address;
+        $blood = json_decode($user_info)->blood_group;
         return response()->json([
           'status' => 200,
           'username' => $user->name,
           'userEmail' => $user->email,
-          // 'gender' => $gender,
-          // 'phone' => $phone,
-          //'photo' => $photo,
-          // 'birthday' => $birthday,
-          // 'address' => $address,
-          // 'blood' => $blood,
+          'gender' => $gender,
+          'phone' => $phone,
+          'photo' => $photo,
+          'birthday' => $birthday,
+          'address' => $address,
+          'blood' => $blood,
           'token' => $token,
           'role_id' => $user->role_id,
           'message' => 'Logged In successful.'
