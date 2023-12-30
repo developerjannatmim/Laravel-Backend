@@ -1877,7 +1877,8 @@ class AdminController extends Controller
             'ending_time',
             'total_marks',
             'class_id',
-            'section_id'
+            'section_id',
+            'status',
           ],
         ),
       ],
@@ -1893,12 +1894,13 @@ class AdminController extends Controller
 
         $validated = $request->validated(),
         'exam' => Exam::create([
-          'name' => $validated['exam_category_id'],
+          'exam_category_id' => $validated['exam_category_id'],
           'starting_time' => $validated['starting_time'],
           'ending_time' => $validated['ending_time'],
           'total_marks' => $validated['total_marks'],
           'class_id' => $validated['class_id'],
           'section_id' => $validated['section_id'],
+          'status' => $validated['status'],
           'school_id' => '1'
         ]),
       ],

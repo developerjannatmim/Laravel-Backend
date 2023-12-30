@@ -37,6 +37,7 @@ class ExamUpdateRequest extends FormRequest {
             'total_marks' => 'required',
             'section_id' => 'required',
             'class_id' => 'required',
+            'status' => 'required',
         ];
     }
 }

@@ -23,6 +23,7 @@ class Exam extends Model
         'total_marks',
         'class_id',
         'section_id',
+        'status',
         'school_id'
     ];
     public function class(): BelongsTo
